@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/all_music"
+        android:icon="@drawable/ic_icon_music"
+        android:title="Music"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/singer"
+        android:icon="@drawable/ic_icon_singer"
+        android:title="Singer"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/album"
+        android:icon="@drawable/ic_icon_album"
+        android:title="Album"
+        app:showAsAction="always"/>
+</menu>
