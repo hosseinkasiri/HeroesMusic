@@ -1,10 +1,11 @@
 package com.example.heroesmusic.utils;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
-import android.widget.Toolbar;
 
 import com.example.heroesmusic.R;
 import com.google.android.material.appbar.AppBarLayout;
@@ -15,9 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarLayout mAppBarLayout;
     private Toolbar mToolbar;
-    private TabLayout mTabLayout;
     private BottomNavigationView mBottomNavigation;
-    private ViewPager mViewPager;
+    private ViewPager2 mViewPager;
     private ViewPagerAdapter mPagerAdapter;
 
     @Override
@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private void findViews(){
         mAppBarLayout = findViewById(R.id.app_bar);
         mToolbar = findViewById(R.id.tool_bar);
-        mTabLayout = findViewById(R.id.tab_layout);
         mBottomNavigation = findViewById(R.id.bottom_navigation);
         mViewPager = findViewById(R.id.view_pager);
     }
