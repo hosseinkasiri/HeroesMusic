@@ -25,7 +25,7 @@ public class MusicAdapter extends RecyclerView.Adapter <MusicHolder>{
     @Override
     public MusicHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-        View view = layoutInflater.inflate(R.layout.fragment_music_list,parent,false);
+        View view = layoutInflater.inflate(R.layout.item_music,parent,false);
         return new MusicHolder(view);
     }
 

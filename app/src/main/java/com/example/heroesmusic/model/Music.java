@@ -1,21 +1,21 @@
 package com.example.heroesmusic.model;
 
 public class Music {
-    private String mName;
-    private String mPath;
+    private String mMusicName;
+    private String mMusicPath;
 
     public Music(String path) {
-        mPath = path;
-        String[] splits = mPath.split("/");
+        mMusicPath = path;
+        String[] splits = mMusicPath.split("/");
         String fileName = splits[splits.length - 1];
-        mName = fileName.substring(0,fileName.lastIndexOf("."));
+        mMusicName = fileName.substring(0,fileName.lastIndexOf("."));
     }
 
-    public String getName() {
-        return mName;
+    public String getMusicName() {
+        return mMusicName;
     }
 
-    public String getPath() {
-        return mPath;
+    public String getMusicPath() {
+        return mMusicPath;
     }
 }
