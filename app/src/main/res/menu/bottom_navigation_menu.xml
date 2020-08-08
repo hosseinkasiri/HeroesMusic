@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/all_music"
+        android:id="@+id/music"
         android:icon="@drawable/ic_icon_music"
         android:title="Music"
         app:showAsAction="always"/>

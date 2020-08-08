@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.model.Singer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SingerAdapter extends RecyclerView.Adapter<SingerHolder> {
@@ -20,6 +21,7 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerHolder> {
 
     public SingerAdapter(Context context) {
         mContext = context;
+        mSingers = new ArrayList<>();
     }
 
     @NonNull

@@ -1,4 +1,4 @@
-package com.example.heroesmusic.utils;
+package com.example.heroesmusic.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,17 +26,17 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return mFragmentTitle.size();
+        return mFragments.size();
     }
 
-    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return mFragmentTitle.get(position);
-    }
+//    @Nullable
+//    @Override
+//    public CharSequence getPageTitle(int position) {
+//        return mFragmentTitle.get(position);
+//    }
 
-    public void addFragment (Fragment fragment , String title){
+    public void addFragment (Fragment fragment){
         mFragments.add(fragment);
-        mFragmentTitle.add(title);
+       // mFragmentTitle.add(title);
     }
 }
