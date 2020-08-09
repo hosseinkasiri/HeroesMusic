@@ -3,6 +3,8 @@ package com.example.heroesmusic.model;
 public class Music {
     private String mMusicName;
     private String mMusicPath;
+    private String mSinger;
+    private String mAlbum;
 
     public Music(String path) {
         mMusicPath = path;
@@ -17,5 +19,21 @@ public class Music {
 
     public String getMusicPath() {
         return mMusicPath;
+    }
+
+    public String getSinger() {
+        return mSinger;
+    }
+
+    public void setSinger(String singer) {
+        mSinger = singer;
+    }
+
+    public String getAlbum() {
+        return mAlbum;
+    }
+
+    public void setAlbum(String album) {
+        mAlbum = album;
     }
 }

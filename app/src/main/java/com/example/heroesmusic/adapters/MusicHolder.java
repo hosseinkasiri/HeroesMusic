@@ -1,19 +1,33 @@
 package com.example.heroesmusic.adapters;
 
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.heroesmusic.R;
 import com.example.heroesmusic.model.Music;
 
 public class MusicHolder extends RecyclerView.ViewHolder {
 
+    private ImageView mMusicImage;
+    private TextView mMusicName , mMusicArtist;
+
     public MusicHolder(@NonNull View itemView) {
         super(itemView);
+        findViews(itemView);
+    }
+
+    private void findViews(@NonNull View itemView) {
+        mMusicImage = itemView.findViewById(R.id.music_image);
+        mMusicName = itemView.findViewById(R.id.music_name);
+        mMusicArtist = itemView.findViewById(R.id.music_artist);
     }
 
     public void bind(Music music){
-
+        mMusicName.setText(music.getMusicName());
+        mMusicArtist.setText(music.getSinger());
     }
 }

@@ -18,9 +18,13 @@ public class MusicAdapter extends RecyclerView.Adapter <MusicHolder>{
     private Context mContext;
     private List<Music> mMusic;
 
-    public MusicAdapter(Context context) {
+    public MusicAdapter(Context context , List<Music> music) {
         mContext = context;
-        mMusic = new ArrayList<>();
+        mMusic = new ArrayList<>(music);
+    }
+
+    public void setMusic(List<Music> music) {
+        mMusic = music;
     }
 
     @NonNull
