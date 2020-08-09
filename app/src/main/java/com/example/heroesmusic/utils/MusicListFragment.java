@@ -23,13 +23,13 @@ import com.example.heroesmusic.R;
 import com.example.heroesmusic.adapters.MusicAdapter;
 import com.example.heroesmusic.helper.Toaster;
 import com.example.heroesmusic.model.Music;
+import com.example.heroesmusic.model.MusicLab;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MusicListFragment extends Fragment {
 
-    private static final int REQ_PERMISSION = 0;
     private RecyclerView mMusicRecyclerView;
     private List<Music> mMusic;
     private MusicAdapter mMusicAdapter;
@@ -57,12 +57,14 @@ public class MusicListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_music_list, container, false);
         findViews(view);
         mMusicRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        MusicLab.getPermission(getActivity());
         updateUi();
 
         return view;
     }
 
     private void updateUi() {
+        mMusic = MusicLab.getMusic(getActivity());
         if (mMusicAdapter == null) {
             mMusicAdapter = new MusicAdapter(getActivity(), mMusic);
             mMusicRecyclerView.setAdapter(mMusicAdapter);

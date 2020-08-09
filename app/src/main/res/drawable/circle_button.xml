@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
     <gradient
-        android:endColor="@color/primaryOrangeColor">
+        android:startColor="@color/primaryOrangeColor">
     </gradient>
-
 </shape>

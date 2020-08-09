@@ -1,11 +1,13 @@
 package com.example.heroesmusic.utils;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.adapters.ViewPagerAdapter;
@@ -30,6 +32,31 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(AlbumListFragment.newInstance());
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(3);
+        handelViewPager();
+        handelBottomNavigation();
+    }
+
+    private void handelBottomNavigation() {
+        mBottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.music:
+                        mViewPager.setCurrentItem(0);
+                        break;
+                    case R.id.singer:
+                        mViewPager.setCurrentItem(1);
+                        break;
+                    case R.id.album:
+                        mViewPager.setCurrentItem(2);
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void handelViewPager() {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -49,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
             }
