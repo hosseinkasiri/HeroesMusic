@@ -9,26 +9,27 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="5dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:background="@color/primaryColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:foregroundGravity="center">
 
         <ImageView
             android:id="@+id/music_image"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="@drawable/circle_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.046"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/music_name"
@@ -38,10 +39,10 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.071"
+            app:layout_constraintHorizontal_bias="0.061"
             app:layout_constraintStart_toEndOf="@+id/music_image"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.313"
+            app:layout_constraintVertical_bias="0.194"
             tools:text="Migzare" />
 
         <TextView
@@ -56,6 +57,7 @@
             app:layout_constraintStart_toEndOf="@+id/music_image"
             app:layout_constraintTop_toBottomOf="@+id/music_name"
             app:layout_constraintVertical_bias="0.0"
+            android:layout_marginBottom="2dp"
             tools:text="Sogand-Zakhmi" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
