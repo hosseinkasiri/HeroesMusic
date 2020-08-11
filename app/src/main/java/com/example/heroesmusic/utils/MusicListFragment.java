@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.example.heroesmusic.helper.Toaster;
 import com.example.heroesmusic.model.Music;
 import com.example.heroesmusic.model.MusicLab;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +35,6 @@ public class MusicListFragment extends Fragment {
     private RecyclerView mMusicRecyclerView;
     private List<Music> mMusic;
     private MusicAdapter mMusicAdapter;
-
     public MusicListFragment() {
         // Required empty public constructor
     }
@@ -59,7 +60,6 @@ public class MusicListFragment extends Fragment {
         mMusicRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         MusicLab.getPermission(getActivity());
         updateUi();
-
         return view;
     }
 

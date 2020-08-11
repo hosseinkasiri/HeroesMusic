@@ -12,7 +12,10 @@ import android.provider.MediaStore;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MusicLab {
@@ -43,24 +46,33 @@ public class MusicLab {
         List<Music> musicList = new ArrayList<>();
         ContentResolver contentResolver = context.getContentResolver();
         Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Cursor musicCursor = contentResolver.query(musicUri,null,null,null,null);
+        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
+        Cursor musicCursor = contentResolver.query(musicUri,null, selection,null,null);
         if (musicCursor != null && musicCursor.moveToFirst()){
             int songTitle = musicCursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
             int songArtist = musicCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
             int songAlbum = musicCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM);
+            int songPath = musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
 
-            do {
-                String currentTitle = musicCursor.getString(songTitle);
-                String currentArtist = musicCursor.getString(songArtist);
-                String currentAlbum = musicCursor.getString(songAlbum);
-                Music music = new Music();
-                music.setMusicName(currentTitle);
-                music.setSinger(currentArtist);
-                music.setAlbum(currentAlbum);
-                music.setMusicPath(musicUri.getPath());
-                musicList.add(music);
+            if (musicCursor != null) {
+                if (musicCursor.moveToFirst()) {
 
-            }while (musicCursor.moveToNext());
+                    do {
+                        String currentTitle = musicCursor.getString(songTitle);
+                        String currentArtist = musicCursor.getString(songArtist);
+                        String currentAlbum = musicCursor.getString(songAlbum);
+                        String currentPath = musicCursor.getString(songPath);
+                        Music music = new Music();
+                        music.setMusicName(currentTitle);
+                        music.setSinger(currentArtist);
+                        music.setAlbum(currentAlbum);
+                        music.setMusicPath(currentPath);
+                        musicList.add(music);
+
+                    } while (musicCursor.moveToNext());
+                }
+                musicCursor.close();
+            }
         }
         return musicList;
     }
