@@ -11,11 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.heroesmusic.R;
+import com.example.heroesmusic.adapters.MusicAdapter;
 import com.example.heroesmusic.adapters.SingerAdapter;
+import com.example.heroesmusic.model.Music;
+import com.example.heroesmusic.model.MusicLab;
+import com.example.heroesmusic.model.Singer;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class SingerListFragment extends Fragment {
 
     private RecyclerView mSingerRecyclerView;
+    private List<Singer> mSingers;
+    private SingerAdapter mSingerAdapter;
 
     public SingerListFragment() {
         // Required empty public constructor
@@ -31,6 +41,7 @@ public class SingerListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSingers = new ArrayList<>();
     }
 
     @Override
@@ -40,9 +51,19 @@ public class SingerListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_singer_list, container, false);
         findViews(view);
         mSingerRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        SingerAdapter singerAdapter = new SingerAdapter(getActivity());
-        mSingerRecyclerView.setAdapter(singerAdapter);
+        updateUi();
         return view;
+    }
+
+    private void updateUi() {
+        mSingers = MusicLab.getSingers(MusicLab.getMusic(getActivity()));
+        if (mSingerAdapter == null) {
+            mSingerAdapter = new SingerAdapter(getActivity(), mSingers);
+            mSingerRecyclerView.setAdapter(mSingerAdapter);
+        }else {
+            mSingerAdapter.setSingers(mSingers);
+            mSingerAdapter.notifyDataSetChanged();
+        }
     }
 
     private void findViews(View view) {

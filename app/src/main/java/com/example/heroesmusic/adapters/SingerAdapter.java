@@ -19,9 +19,13 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerHolder> {
     private Context mContext;
     private List<Singer> mSingers;
 
-    public SingerAdapter(Context context) {
+    public SingerAdapter(Context context , List<Singer> singers) {
         mContext = context;
-        mSingers = new ArrayList<>();
+        mSingers = new ArrayList<>(singers);
+    }
+
+    public void setSingers(List<Singer> singers) {
+        mSingers = singers;
     }
 
     @NonNull

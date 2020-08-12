@@ -76,4 +76,28 @@ public class MusicLab {
         }
         return musicList;
     }
+
+    public static List<Singer> getSingers(List<Music> music){
+        List<Singer> singers = new ArrayList<>();
+        for (int i = 0 ; i < music.size() ; i++){
+            if (i == 0){
+                Singer singer = new Singer();
+                singer.setSingerName(music.get(i).getSinger());
+                singer.setPath(music.get(i).getMusicPath());
+                singers.add(singer);
+                continue;
+            }
+            for (int j = 0 ; j < singers.size() ; j++){
+                if (music.get(i).getSinger().equals(singers.get(j).getSingerName()))
+                    break;
+                else if(singers.size()-1 == j && !music.get(i).getSinger().equals(singers.get(j).getSingerName())){
+                    Singer singer = new Singer();
+                    singer.setSingerName(music.get(i).getSinger());
+                    singer.setPath(music.get(i).getMusicPath());
+                    singers.add(singer);
+                }
+            }
+        }
+        return singers;
+    }
 }
