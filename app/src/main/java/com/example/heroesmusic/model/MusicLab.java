@@ -100,4 +100,29 @@ public class MusicLab {
         }
         return singers;
     }
+
+    public static List<Album> getAlbums(List<Music> music){
+        List<Album> albums = new ArrayList<>();
+        for (int i = 0 ; i < music.size() ; i++){
+            if (i == 0){
+                Album album = new Album();
+                album.setAlbumName(music.get(i).getAlbum());
+                album.setAlbumPath(music.get(i).getMusicPath());
+                albums.add(album);
+                continue;
+            }
+            for (int j = 0 ; j < albums.size() ; j++){
+                if (music.get(i).getAlbum().equals(albums.get(j).getAlbumName()))
+                    break;
+                else if(albums.size()-1 == j && !music.get(i).getAlbum().equals(albums.get(j).getAlbumName())){
+                    Album album = new Album();
+                    album.setAlbumName(music.get(i).getAlbum());
+                    album.setSinger(music.get(i).getSinger());
+                    album.setAlbumPath(music.get(i).getMusicPath());
+                    albums.add(album);
+                }
+            }
+        }
+        return albums;
+    }
 }

@@ -12,10 +12,17 @@ import android.view.ViewGroup;
 
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.adapters.AlbumAdapter;
+import com.example.heroesmusic.model.Album;
+import com.example.heroesmusic.model.MusicLab;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AlbumListFragment extends Fragment {
 
     private RecyclerView mAlbumRecyclerView;
+    private List<Album> mAlbums;
+    private AlbumAdapter mAlbumAdapter;
 
     public AlbumListFragment() {
         // Required empty public constructor
@@ -31,6 +38,7 @@ public class AlbumListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAlbums = new ArrayList<>();
     }
 
     @Override
@@ -40,9 +48,19 @@ public class AlbumListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_album_list, container, false);
         findViews(view);
         mAlbumRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        AlbumAdapter albumAdapter = new AlbumAdapter(getActivity());
-        mAlbumRecyclerView.setAdapter(albumAdapter);
+        updateUi();
         return view;
+    }
+
+    private void updateUi() {
+        mAlbums = MusicLab.getAlbums(MusicLab.getMusic(getActivity()));
+        if (mAlbumAdapter == null) {
+            mAlbumAdapter = new AlbumAdapter(getActivity(), mAlbums);
+            mAlbumRecyclerView.setAdapter(mAlbumAdapter);
+        }else {
+            mAlbumAdapter.setAlbums(mAlbums);
+            mAlbumAdapter.notifyDataSetChanged();
+        }
     }
 
     private void findViews(View view) {
