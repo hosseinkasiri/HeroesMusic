@@ -3,8 +3,6 @@ package com.example.heroesmusic.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaMetadataRetriever;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,10 +30,9 @@ public class MusicHolder extends RecyclerView.ViewHolder {
         mMusicArtist = itemView.findViewById(R.id.music_artist);
     }
 
-    public void bind(Music music , Context context){
+    public void bind(Music music){
         mMusicName.setText(music.getMusicName());
         mMusicArtist.setText(music.getSinger());
-        Bitmap bitmap = PictureUtils.getScaledBitmap(music.getMusicPath(),(Activity)context);
-        mMusicImage.setImageBitmap(bitmap);
+        mMusicImage.setImageBitmap(music.getAlbumArtBitmap());
     }
 }

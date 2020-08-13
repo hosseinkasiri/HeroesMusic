@@ -2,20 +2,22 @@ package com.example.heroesmusic.model;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import java.io.File;
-import java.io.FileFilter;
+import com.example.heroesmusic.helper.PictureUtils;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MusicLab {
@@ -44,35 +46,56 @@ public class MusicLab {
 
     public static List<Music> getMusic(Context context){
         List<Music> musicList = new ArrayList<>();
-        ContentResolver contentResolver = context.getContentResolver();
-        Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
-        Cursor musicCursor = contentResolver.query(musicUri,null, selection,null,null);
-        if (musicCursor != null && musicCursor.moveToFirst()){
-            int songTitle = musicCursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
-            int songArtist = musicCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
-            int songAlbum = musicCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM);
-            int songPath = musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
+        final Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        final String[] cursor_cols = { MediaStore.Audio.Media._ID,
+                MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ALBUM,
+                MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media.ALBUM_ID,
+                MediaStore.Audio.Media.DURATION };
+        final String where = MediaStore.Audio.Media.IS_MUSIC + "=1";
+        final Cursor cursor = context.getContentResolver().query(uri,
+                cursor_cols, where, null, null);
 
-            if (musicCursor != null) {
-                if (musicCursor.moveToFirst()) {
+        while (cursor.moveToNext()) {
+            String artist = cursor.getString(cursor
+                    .getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
+            String album = cursor.getString(cursor
+                    .getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
+            String track = cursor.getString(cursor
+                    .getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
+            String data = cursor.getString(cursor
+                    .getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
+            Long albumId = cursor.getLong(cursor
+                    .getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
 
-                    do {
-                        String currentTitle = musicCursor.getString(songTitle);
-                        String currentArtist = musicCursor.getString(songArtist);
-                        String currentAlbum = musicCursor.getString(songAlbum);
-                        String currentPath = musicCursor.getString(songPath);
-                        Music music = new Music();
-                        music.setMusicName(currentTitle);
-                        music.setSinger(currentArtist);
-                        music.setAlbum(currentAlbum);
-                        music.setMusicPath(currentPath);
-                        musicList.add(music);
+            int duration = cursor.getInt(cursor
+                    .getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
 
-                    } while (musicCursor.moveToNext());
-                }
-                musicCursor.close();
+            Uri sArtworkUri = Uri
+                    .parse("content://media/external/audio/albumart");
+            Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
+
+           // Logger.debug(albumArtUri.toString());
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), albumArtUri);
+                bitmap = Bitmap.createScaledBitmap(bitmap, 30, 30, true);
+
+            } catch (FileNotFoundException exception) {
+                exception.printStackTrace();
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
             }
+            Music audioListModel = new Music();
+            audioListModel.setSinger(artist);
+            audioListModel.setAlbumArtBitmap(bitmap);
+            audioListModel.setAlbum(album);
+            audioListModel.setMusicPath(data);
+            audioListModel.setMusicName(track);
+            audioListModel.setAlbumArtUri(albumArtUri);
+            musicList.add(audioListModel);
         }
         return musicList;
     }
@@ -94,6 +117,7 @@ public class MusicLab {
                     Singer singer = new Singer();
                     singer.setSingerName(music.get(i).getSinger());
                     singer.setPath(music.get(i).getMusicPath());
+                    singer.setSingerAlbumBitmap(music.get(i).getAlbumArtBitmap());
                     singers.add(singer);
                 }
             }
@@ -119,6 +143,7 @@ public class MusicLab {
                     album.setAlbumName(music.get(i).getAlbum());
                     album.setSinger(music.get(i).getSinger());
                     album.setAlbumPath(music.get(i).getMusicPath());
+                    album.setAlbumBitmap(music.get(i).getAlbumArtBitmap());
                     albums.add(album);
                 }
             }

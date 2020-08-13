@@ -38,7 +38,7 @@ public class MusicAdapter extends RecyclerView.Adapter <MusicHolder>{
     @Override
     public void onBindViewHolder(@NonNull MusicHolder holder, int position) {
         Music music = mMusic.get(position);
-        holder.bind(music , mContext);
+        holder.bind(music);
     }
 
     @Override

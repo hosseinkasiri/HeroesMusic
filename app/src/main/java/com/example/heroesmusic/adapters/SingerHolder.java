@@ -24,5 +24,6 @@ public class SingerHolder extends RecyclerView.ViewHolder {
 
     public void bind(Singer singer){
         mSingerName.setText(singer.getSingerName());
+        mSingerImage.setImageBitmap(singer.getSingerAlbumBitmap());
     }
 }

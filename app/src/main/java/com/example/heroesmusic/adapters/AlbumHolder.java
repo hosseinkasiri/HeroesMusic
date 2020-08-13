@@ -25,5 +25,6 @@ public class AlbumHolder extends RecyclerView.ViewHolder {
     public void bind(Album album){
         mAlbumName.setText(album.getAlbumName());
         mArtistName.setText(album.getSinger());
+        mAlbumImage.setImageBitmap(album.getAlbumBitmap());
     }
 }
