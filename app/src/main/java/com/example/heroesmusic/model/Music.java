@@ -10,6 +10,7 @@ public class Music {
     private String mAlbum;
     private Bitmap mAlbumArtBitmap;
     private Uri mAlbumArtUri;
+    private int mDuration;
 
     public String getMusicName() {
         return mMusicName;
@@ -57,5 +58,13 @@ public class Music {
 
     public void setAlbumArtUri(Uri albumArtUri) {
         mAlbumArtUri = albumArtUri;
+    }
+
+    public int getDuration() {
+        return mDuration;
+    }
+
+    public void setDuration(int duration) {
+        mDuration = duration;
     }
 }

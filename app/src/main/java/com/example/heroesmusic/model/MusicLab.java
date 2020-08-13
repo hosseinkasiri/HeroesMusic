@@ -27,7 +27,6 @@ public class MusicLab {
     private static final int REQ_PERMISSION = 0;
 
     public static void getPermission(Context context){
-
         if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             if (ActivityCompat.shouldShowRequestPermissionRationale((Activity)context,Manifest.permission.READ_EXTERNAL_STORAGE)){
@@ -57,7 +56,6 @@ public class MusicLab {
         final String where = MediaStore.Audio.Media.IS_MUSIC + "=1";
         final Cursor cursor = context.getContentResolver().query(uri,
                 cursor_cols, where, null, null);
-
         while (cursor.moveToNext()) {
             String artist = cursor.getString(cursor
                     .getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
@@ -69,15 +67,11 @@ public class MusicLab {
                     .getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
             Long albumId = cursor.getLong(cursor
                     .getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
-
             int duration = cursor.getInt(cursor
                     .getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
 
-            Uri sArtworkUri = Uri
-                    .parse("content://media/external/audio/albumart");
+            Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
             Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
-
-           // Logger.debug(albumArtUri.toString());
             Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), albumArtUri);
@@ -88,17 +82,17 @@ public class MusicLab {
                         R.drawable.default_music_cover);
 
             } catch (IOException e) {
-
                 e.printStackTrace();
             }
-            Music audioListModel = new Music();
-            audioListModel.setSinger(artist);
-            audioListModel.setAlbumArtBitmap(bitmap);
-            audioListModel.setAlbum(album);
-            audioListModel.setMusicPath(data);
-            audioListModel.setMusicName(track);
-            audioListModel.setAlbumArtUri(albumArtUri);
-            musicList.add(audioListModel);
+            Music music = new Music();
+            music.setSinger(artist);
+            music.setAlbumArtBitmap(bitmap);
+            music.setAlbum(album);
+            music.setMusicPath(data);
+            music.setMusicName(track);
+            music.setAlbumArtUri(albumArtUri);
+            music.setDuration(duration);
+            musicList.add(music);
         }
         return musicList;
     }
@@ -110,6 +104,7 @@ public class MusicLab {
                 Singer singer = new Singer();
                 singer.setSingerName(music.get(i).getSinger());
                 singer.setPath(music.get(i).getMusicPath());
+                singer.setSingerAlbumBitmap(music.get(i).getAlbumArtBitmap());
                 singers.add(singer);
                 continue;
             }
@@ -135,6 +130,8 @@ public class MusicLab {
                 Album album = new Album();
                 album.setAlbumName(music.get(i).getAlbum());
                 album.setAlbumPath(music.get(i).getMusicPath());
+                album.setAlbumBitmap(music.get(i).getAlbumArtBitmap());
+                album.setSinger(music.get(i).getSinger());
                 albums.add(album);
                 continue;
             }
