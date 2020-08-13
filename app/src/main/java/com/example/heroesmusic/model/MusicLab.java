@@ -7,12 +7,14 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.heroesmusic.R;
 import com.example.heroesmusic.helper.PictureUtils;
 
 import java.io.FileNotFoundException;
@@ -79,10 +81,11 @@ public class MusicLab {
             Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), albumArtUri);
-                bitmap = Bitmap.createScaledBitmap(bitmap, 30, 30, true);
 
             } catch (FileNotFoundException exception) {
                 exception.printStackTrace();
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.default_music_cover);
 
             } catch (IOException e) {
 
