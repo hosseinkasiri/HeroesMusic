@@ -13,6 +13,7 @@ import com.example.heroesmusic.R;
 import com.example.heroesmusic.adapters.ViewPagerAdapter;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -35,6 +35,7 @@ public class MusicListFragment extends Fragment {
     private RecyclerView mMusicRecyclerView;
     private List<Music> mMusic;
     private MusicAdapter mMusicAdapter;
+    private MusicLab mMusicLab;
     public MusicListFragment() {
         // Required empty public constructor
     }
@@ -50,6 +51,7 @@ public class MusicListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mMusic = new ArrayList<>();
+        mMusicLab = new MusicLab(getActivity());
     }
 
     @Override
@@ -63,10 +65,15 @@ public class MusicListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
     private void updateUi() {
-        mMusic = MusicLab.getMusic(getActivity());
+        mMusic = mMusicLab.getMusicList();
         if (mMusicAdapter == null) {
-            mMusicAdapter = new MusicAdapter(getActivity(), mMusic);
+            mMusicAdapter = new MusicAdapter(getActivity(), mMusic , mMusicLab);
             mMusicRecyclerView.setAdapter(mMusicAdapter);
         }else {
             mMusicAdapter.setMusic(mMusic);

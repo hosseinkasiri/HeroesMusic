@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.provider.MediaStore;
 
@@ -25,6 +27,23 @@ import java.util.List;
 public class MusicLab {
 
     private static final int REQ_PERMISSION = 0;
+    private List<Music> mMusicList;
+    private MediaPlayer mMediaPlayer;
+    private Context mContext;
+
+    public MusicLab(Context context) {
+        mContext = context;
+        mMusicList = new ArrayList<>();
+        mMusicList = getMusic(context);
+    }
+
+    public List<Music> getMusicList() {
+        return mMusicList;
+    }
+
+    public MediaPlayer getMediaPlayer() {
+        return mMediaPlayer;
+    }
 
     public static void getPermission(Context context){
         if (ContextCompat.checkSelfPermission(context,
@@ -69,6 +88,9 @@ public class MusicLab {
                     .getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
             int duration = cursor.getInt(cursor
                     .getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
+            long mySongId = cursor.getLong(cursor.getColumnIndex(android.provider.MediaStore.Audio.Media._ID));
+
+            Uri mySongUri=ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, mySongId);
 
             Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
             Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
@@ -84,6 +106,19 @@ public class MusicLab {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+//            MediaPlayer mediaPlayer = new MediaPlayer();
+//            mediaPlayer.setAudioAttributes(
+//                    new AudioAttributes.Builder()
+//                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+//                            .setUsage(AudioAttributes.USAGE_MEDIA)
+//                            .build()
+//            );
+//            try {
+//                mediaPlayer.setDataSource(context, mySongUri);
+//                mediaPlayer.prepare();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
             Music music = new Music();
             music.setSinger(artist);
             music.setAlbumArtBitmap(bitmap);
@@ -92,6 +127,8 @@ public class MusicLab {
             music.setMusicName(track);
             music.setAlbumArtUri(albumArtUri);
             music.setDuration(duration);
+          //  music.setMediaPlayer(mediaPlayer);
+            music.setMusicUri(mySongUri);
             musicList.add(music);
         }
         return musicList;
@@ -149,5 +186,33 @@ public class MusicLab {
             }
         }
         return albums;
+    }
+
+    public void startMusic(Music music){
+        releaseMusic();
+        mMediaPlayer = new MediaPlayer();
+        mMediaPlayer.setAudioAttributes(
+                new AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .build()
+        );
+        Uri uri = music.getMusicUri();
+        try {
+                mMediaPlayer.setDataSource(mContext, uri);
+                mMediaPlayer.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        mMediaPlayer.start();
+    }
+
+    public void releaseMusic(){
+        if (mMediaPlayer != null && mMediaPlayer.isPlaying())
+            mMediaPlayer.release();
+    }
+
+    public void pause(){
+        mMediaPlayer.pause();
     }
 }
