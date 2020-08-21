@@ -6,7 +6,7 @@ public class Album {
     private String mAlbumName;
     private String mAlbumPath;
     private String mSinger;
-    private Bitmap mAlbumBitmap;
+    private long mAlbumId;
 
     public String getAlbumName() {
         return mAlbumName;
@@ -32,11 +32,11 @@ public class Album {
         mSinger = singer;
     }
 
-    public Bitmap getAlbumBitmap() {
-        return mAlbumBitmap;
+    public long getAlbumId() {
+        return mAlbumId;
     }
 
-    public void setAlbumBitmap(Bitmap albumBitmap) {
-        mAlbumBitmap = albumBitmap;
+    public void setAlbumId(long albumId) {
+        mAlbumId = albumId;
     }
 }

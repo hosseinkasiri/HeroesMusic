@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 public class Singer {
     private String mSingerName;
     private String mPath;
-    private Bitmap mSingerAlbumBitmap;
+    private long mAlbumId;
 
     public String getSingerName() {
         return mSingerName;
@@ -23,11 +23,11 @@ public class Singer {
         mPath = path;
     }
 
-    public Bitmap getSingerAlbumBitmap() {
-        return mSingerAlbumBitmap;
+    public long getAlbumId() {
+        return mAlbumId;
     }
 
-    public void setSingerAlbumBitmap(Bitmap singerAlbumBitmap) {
-        mSingerAlbumBitmap = singerAlbumBitmap;
+    public void setAlbumId(long albumId) {
+        mAlbumId = albumId;
     }
 }

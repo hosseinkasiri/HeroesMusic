@@ -27,25 +27,29 @@ import java.util.List;
 public class MusicLab {
 
     private static final int REQ_PERMISSION = 0;
+    private static MusicLab mInstance;
     private List<Music> mMusicList;
-    private MediaPlayer mMediaPlayer;
     private Context mContext;
 
-    public MusicLab(Context context) {
+    private MusicLab(Context context) {
         mContext = context;
         mMusicList = new ArrayList<>();
         mMusicList = getMusic(context);
+    }
+
+    public static MusicLab getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new MusicLab(context);
+            return mInstance;
+        }
+        return mInstance;
     }
 
     public List<Music> getMusicList() {
         return mMusicList;
     }
 
-    public MediaPlayer getMediaPlayer() {
-        return mMediaPlayer;
-    }
-
-    public static void getPermission(Context context){
+    public void getPermission(Context context){
         if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             if (ActivityCompat.shouldShowRequestPermissionRationale((Activity)context,Manifest.permission.READ_EXTERNAL_STORAGE)){
@@ -60,11 +64,11 @@ public class MusicLab {
         }
     }
 
-    public static void doStuff(Context context){
+    public void doStuff(Context context){
         getMusic(context);
     }
 
-    public static List<Music> getMusic(Context context){
+    private List<Music> getMusic(Context context){
         List<Music> musicList = new ArrayList<>();
         final Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         final String[] cursor_cols = { MediaStore.Audio.Media._ID,
@@ -86,62 +90,28 @@ public class MusicLab {
                     .getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
             Long albumId = cursor.getLong(cursor
                     .getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
-            int duration = cursor.getInt(cursor
-                    .getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
             long mySongId = cursor.getLong(cursor.getColumnIndex(android.provider.MediaStore.Audio.Media._ID));
-
             Uri mySongUri=ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, mySongId);
-
-            Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
-            Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
-            Bitmap bitmap = null;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), albumArtUri);
-
-            } catch (FileNotFoundException exception) {
-                exception.printStackTrace();
-                bitmap = BitmapFactory.decodeResource(context.getResources(),
-                        R.drawable.default_music_cover);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-//            MediaPlayer mediaPlayer = new MediaPlayer();
-//            mediaPlayer.setAudioAttributes(
-//                    new AudioAttributes.Builder()
-//                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-//                            .setUsage(AudioAttributes.USAGE_MEDIA)
-//                            .build()
-//            );
-//            try {
-//                mediaPlayer.setDataSource(context, mySongUri);
-//                mediaPlayer.prepare();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
             Music music = new Music();
             music.setSinger(artist);
-            music.setAlbumArtBitmap(bitmap);
             music.setAlbum(album);
             music.setMusicPath(data);
             music.setMusicName(track);
-            music.setAlbumArtUri(albumArtUri);
-            music.setDuration(duration);
-          //  music.setMediaPlayer(mediaPlayer);
             music.setMusicUri(mySongUri);
+            music.setAlbumId(albumId);
             musicList.add(music);
         }
         return musicList;
     }
 
-    public static List<Singer> getSingers(List<Music> music){
+    public List<Singer> getSingers(List<Music> music){
         List<Singer> singers = new ArrayList<>();
         for (int i = 0 ; i < music.size() ; i++){
             if (i == 0){
                 Singer singer = new Singer();
                 singer.setSingerName(music.get(i).getSinger());
                 singer.setPath(music.get(i).getMusicPath());
-                singer.setSingerAlbumBitmap(music.get(i).getAlbumArtBitmap());
+                singer.setAlbumId(music.get(i).getAlbumId());
                 singers.add(singer);
                 continue;
             }
@@ -152,7 +122,7 @@ public class MusicLab {
                     Singer singer = new Singer();
                     singer.setSingerName(music.get(i).getSinger());
                     singer.setPath(music.get(i).getMusicPath());
-                    singer.setSingerAlbumBitmap(music.get(i).getAlbumArtBitmap());
+                    singer.setAlbumId(music.get(i).getAlbumId());
                     singers.add(singer);
                 }
             }
@@ -160,14 +130,14 @@ public class MusicLab {
         return singers;
     }
 
-    public static List<Album> getAlbums(List<Music> music){
+    public List<Album> getAlbums(List<Music> music){
         List<Album> albums = new ArrayList<>();
         for (int i = 0 ; i < music.size() ; i++){
             if (i == 0){
                 Album album = new Album();
                 album.setAlbumName(music.get(i).getAlbum());
                 album.setAlbumPath(music.get(i).getMusicPath());
-                album.setAlbumBitmap(music.get(i).getAlbumArtBitmap());
+                album.setAlbumId(music.get(i).getAlbumId());
                 album.setSinger(music.get(i).getSinger());
                 albums.add(album);
                 continue;
@@ -180,7 +150,7 @@ public class MusicLab {
                     album.setAlbumName(music.get(i).getAlbum());
                     album.setSinger(music.get(i).getSinger());
                     album.setAlbumPath(music.get(i).getMusicPath());
-                    album.setAlbumBitmap(music.get(i).getAlbumArtBitmap());
+                    album.setAlbumId(music.get(i).getAlbumId());
                     albums.add(album);
                 }
             }
@@ -188,31 +158,39 @@ public class MusicLab {
         return albums;
     }
 
-    public void startMusic(Music music){
-        releaseMusic();
-        mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setAudioAttributes(
-                new AudioAttributes.Builder()
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                        .setUsage(AudioAttributes.USAGE_MEDIA)
-                        .build()
-        );
-        Uri uri = music.getMusicUri();
+    public Bitmap getMusicBitmap(Music music){
+        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+        Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, music.getAlbumId());
+        Bitmap bitmap = null;
         try {
-                mMediaPlayer.setDataSource(mContext, uri);
-                mMediaPlayer.prepare();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        mMediaPlayer.start();
+            bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), albumArtUri);
+
+        } catch (FileNotFoundException exception) {
+            exception.printStackTrace();
+            bitmap = BitmapFactory.decodeResource(mContext.getResources(),
+                    R.drawable.default_music_cover);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
     }
 
-    public void releaseMusic(){
-        if (mMediaPlayer != null && mMediaPlayer.isPlaying())
-            mMediaPlayer.release();
-    }
+    public Bitmap getMusicBitmap(long albumId){
+        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+        Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), albumArtUri);
 
-    public void pause(){
-        mMediaPlayer.pause();
+        } catch (FileNotFoundException exception) {
+            exception.printStackTrace();
+            bitmap = BitmapFactory.decodeResource(mContext.getResources(),
+                    R.drawable.default_music_cover);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
     }
 }

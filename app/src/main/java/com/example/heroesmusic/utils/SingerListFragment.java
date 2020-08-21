@@ -56,7 +56,7 @@ public class SingerListFragment extends Fragment {
     }
 
     private void updateUi() {
-        mSingers = MusicLab.getSingers(MusicLab.getMusic(getActivity()));
+        mSingers = MusicLab.getInstance(getActivity()).getSingers(MusicLab.getInstance(getActivity()).getMusicList());
         if (mSingerAdapter == null) {
             mSingerAdapter = new SingerAdapter(getActivity(), mSingers);
             mSingerRecyclerView.setAdapter(mSingerAdapter);

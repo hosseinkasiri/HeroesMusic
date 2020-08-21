@@ -51,7 +51,7 @@ public class MusicListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mMusic = new ArrayList<>();
-        mMusicLab = new MusicLab(getActivity());
+        mMusicLab = MusicLab.getInstance(getActivity());
     }
 
     @Override
@@ -60,7 +60,7 @@ public class MusicListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_music_list, container, false);
         findViews(view);
         mMusicRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        MusicLab.getPermission(getActivity());
+        MusicLab.getInstance(getActivity()).getPermission(getActivity());
         updateUi();
         return view;
     }
@@ -73,7 +73,7 @@ public class MusicListFragment extends Fragment {
     private void updateUi() {
         mMusic = mMusicLab.getMusicList();
         if (mMusicAdapter == null) {
-            mMusicAdapter = new MusicAdapter(getActivity(), mMusic , mMusicLab);
+            mMusicAdapter = new MusicAdapter(getActivity(), mMusic);
             mMusicRecyclerView.setAdapter(mMusicAdapter);
         }else {
             mMusicAdapter.setMusic(mMusic);

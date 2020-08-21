@@ -1,5 +1,6 @@
 package com.example.heroesmusic.adapters;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.model.Album;
+import com.example.heroesmusic.model.MusicLab;
 
 public class AlbumHolder extends RecyclerView.ViewHolder {
 
@@ -22,9 +24,9 @@ public class AlbumHolder extends RecyclerView.ViewHolder {
         mArtistName = itemView.findViewById(R.id.album_artist);
     }
 
-    public void bind(Album album){
+    public void bind(Album album , Context context){
         mAlbumName.setText(album.getAlbumName());
         mArtistName.setText(album.getSinger());
-        mAlbumImage.setImageBitmap(album.getAlbumBitmap());
+        mAlbumImage.setImageBitmap(MusicLab.getInstance(context).getMusicBitmap(album.getAlbumId()));
     }
 }

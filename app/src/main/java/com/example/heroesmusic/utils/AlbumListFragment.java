@@ -53,7 +53,7 @@ public class AlbumListFragment extends Fragment {
     }
 
     private void updateUi() {
-        mAlbums = MusicLab.getAlbums(MusicLab.getMusic(getActivity()));
+        mAlbums = MusicLab.getInstance(getActivity()).getAlbums(MusicLab.getInstance(getActivity()).getMusicList());
         if (mAlbumAdapter == null) {
             mAlbumAdapter = new AlbumAdapter(getActivity(), mAlbums);
             mAlbumRecyclerView.setAdapter(mAlbumAdapter);

@@ -39,7 +39,7 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerHolder> {
     @Override
     public void onBindViewHolder(@NonNull SingerHolder holder, int position) {
         Singer singer = mSingers.get(position);
-        holder.bind(singer);
+        holder.bind(singer , mContext);
     }
 
     @Override
