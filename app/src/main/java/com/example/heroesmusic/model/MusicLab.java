@@ -38,10 +38,8 @@ public class MusicLab {
     }
 
     public static MusicLab getInstance(Context context) {
-        if (mInstance == null) {
-            mInstance = new MusicLab(context);
-            return mInstance;
-        }
+        if (mInstance == null)
+            return mInstance = new MusicLab(context);
         return mInstance;
     }
 
@@ -102,60 +100,6 @@ public class MusicLab {
             musicList.add(music);
         }
         return musicList;
-    }
-
-    public List<Singer> getSingers(List<Music> music){
-        List<Singer> singers = new ArrayList<>();
-        for (int i = 0 ; i < music.size() ; i++){
-            if (i == 0){
-                Singer singer = new Singer();
-                singer.setSingerName(music.get(i).getSinger());
-                singer.setPath(music.get(i).getMusicPath());
-                singer.setAlbumId(music.get(i).getAlbumId());
-                singers.add(singer);
-                continue;
-            }
-            for (int j = 0 ; j < singers.size() ; j++){
-                if (music.get(i).getSinger().equals(singers.get(j).getSingerName()))
-                    break;
-                else if(singers.size()-1 == j && !music.get(i).getSinger().equals(singers.get(j).getSingerName())){
-                    Singer singer = new Singer();
-                    singer.setSingerName(music.get(i).getSinger());
-                    singer.setPath(music.get(i).getMusicPath());
-                    singer.setAlbumId(music.get(i).getAlbumId());
-                    singers.add(singer);
-                }
-            }
-        }
-        return singers;
-    }
-
-    public List<Album> getAlbums(List<Music> music){
-        List<Album> albums = new ArrayList<>();
-        for (int i = 0 ; i < music.size() ; i++){
-            if (i == 0){
-                Album album = new Album();
-                album.setAlbumName(music.get(i).getAlbum());
-                album.setAlbumPath(music.get(i).getMusicPath());
-                album.setAlbumId(music.get(i).getAlbumId());
-                album.setSinger(music.get(i).getSinger());
-                albums.add(album);
-                continue;
-            }
-            for (int j = 0 ; j < albums.size() ; j++){
-                if (music.get(i).getAlbum().equals(albums.get(j).getAlbumName()))
-                    break;
-                else if(albums.size()-1 == j && !music.get(i).getAlbum().equals(albums.get(j).getAlbumName())){
-                    Album album = new Album();
-                    album.setAlbumName(music.get(i).getAlbum());
-                    album.setSinger(music.get(i).getSinger());
-                    album.setAlbumPath(music.get(i).getMusicPath());
-                    album.setAlbumId(music.get(i).getAlbumId());
-                    albums.add(album);
-                }
-            }
-        }
-        return albums;
     }
 
     public Bitmap getMusicBitmap(Music music){

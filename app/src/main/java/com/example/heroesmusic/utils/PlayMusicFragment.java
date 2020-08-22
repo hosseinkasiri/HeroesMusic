@@ -46,7 +46,7 @@ public class PlayMusicFragment extends Fragment {
     private List<Music> mMusicList;
     private List<Music> mShuffleList;
     private MediaPlayer mMediaPlayer;
-    private boolean mRepeatBool , mRandomBool ;
+    private boolean mRepeatBool , mRandomBool;
 
     public static PlayMusicFragment newInstance(int position) {
         Bundle args = new Bundle();
@@ -77,6 +77,13 @@ public class PlayMusicFragment extends Fragment {
         mMusicName.setText(mMusic.getMusicName());
         mArtistName.setText(mMusic.getSinger());
         mMusicCover.setImageBitmap(MusicLab.getInstance(getActivity()).getMusicBitmap(mMusic));
+        listenerOfButtons();
+        completionListener();
+        handelSeekBar();
+        return view;
+    }
+
+    private void listenerOfButtons() {
         mPlayImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,9 +126,6 @@ public class PlayMusicFragment extends Fragment {
                     mRandomImage.setColorFilter(getContext().getResources().getColor(R.color.primaryTextColor));
             }
         });
-        completionListener();
-        handelSeekBar();
-        return view;
     }
 
     private void completionListener() {
@@ -226,8 +230,10 @@ public class PlayMusicFragment extends Fragment {
 
         @Override
         public void handleMessage(@NonNull Message msg) {
-            mSeekBar.setProgress(msg.what);
-            mCurrentTime.setText(createTimerLabel(msg.what));
+            if (mMediaPlayer != null) {
+                mSeekBar.setProgress(msg.what);
+                mCurrentTime.setText(createTimerLabel(msg.what));
+            }
         }
     };
 

@@ -16,6 +16,7 @@ import com.example.heroesmusic.adapters.SingerAdapter;
 import com.example.heroesmusic.model.Music;
 import com.example.heroesmusic.model.MusicLab;
 import com.example.heroesmusic.model.Singer;
+import com.example.heroesmusic.model.SingerLab;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,7 @@ public class SingerListFragment extends Fragment {
     }
 
     private void updateUi() {
-        mSingers = MusicLab.getInstance(getActivity()).getSingers(MusicLab.getInstance(getActivity()).getMusicList());
+        mSingers = SingerLab.getInstance(getActivity()).getSingers();
         if (mSingerAdapter == null) {
             mSingerAdapter = new SingerAdapter(getActivity(), mSingers);
             mSingerRecyclerView.setAdapter(mSingerAdapter);

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.adapters.AlbumAdapter;
 import com.example.heroesmusic.model.Album;
+import com.example.heroesmusic.model.AlbumLab;
 import com.example.heroesmusic.model.MusicLab;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class AlbumListFragment extends Fragment {
     }
 
     private void updateUi() {
-        mAlbums = MusicLab.getInstance(getActivity()).getAlbums(MusicLab.getInstance(getActivity()).getMusicList());
+        mAlbums = AlbumLab.getInstance(getActivity()).getAlbums();
         if (mAlbumAdapter == null) {
             mAlbumAdapter = new AlbumAdapter(getActivity(), mAlbums);
             mAlbumRecyclerView.setAdapter(mAlbumAdapter);
