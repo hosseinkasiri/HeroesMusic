@@ -1,48 +1,39 @@
 package com.example.heroesmusic.utils;
 
-import android.Manifest;
-import android.content.ContentResolver;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.adapters.MusicAdapter;
-import com.example.heroesmusic.helper.Toaster;
 import com.example.heroesmusic.model.Music;
 import com.example.heroesmusic.model.MusicLab;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MusicListFragment extends Fragment {
 
+    private static final String ARGS_SINGER = "com.example.heroesMusic.utils_singerName";
     private RecyclerView mMusicRecyclerView;
     private List<Music> mMusic;
     private MusicAdapter mMusicAdapter;
     private MusicLab mMusicLab;
+    private String mSingerName;
     public MusicListFragment() {
         // Required empty public constructor
     }
 
-    public static MusicListFragment newInstance() {
+    public static MusicListFragment newInstance(String singerName) {
         MusicListFragment fragment = new MusicListFragment();
         Bundle args = new Bundle();
+        args.putString(ARGS_SINGER , singerName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,6 +43,8 @@ public class MusicListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mMusic = new ArrayList<>();
         mMusicLab = MusicLab.getInstance(getActivity());
+        if (getArguments() != null)
+            mSingerName = getArguments().getString(ARGS_SINGER);
     }
 
     @Override
@@ -71,9 +64,9 @@ public class MusicListFragment extends Fragment {
     }
 
     private void updateUi() {
-        mMusic = mMusicLab.getMusicList();
+        mMusic = mMusicLab.getMusic(mSingerName);
         if (mMusicAdapter == null) {
-            mMusicAdapter = new MusicAdapter(getActivity(), mMusic);
+            mMusicAdapter = new MusicAdapter(getActivity(), mMusic , mSingerName);
             mMusicRecyclerView.setAdapter(mMusicAdapter);
         }else {
             mMusicAdapter.setMusic(mMusic);

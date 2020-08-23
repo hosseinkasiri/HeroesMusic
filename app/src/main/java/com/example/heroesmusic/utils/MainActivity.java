@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         findViews();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(MusicListFragment.newInstance());
+        adapter.addFragment(MusicListFragment.newInstance(null));
         adapter.addFragment(SingerListFragment.newInstance());
         adapter.addFragment(AlbumListFragment.newInstance());
         mViewPager.setAdapter(adapter);

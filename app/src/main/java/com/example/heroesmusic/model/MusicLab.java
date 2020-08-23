@@ -137,4 +137,15 @@ public class MusicLab {
         }
         return bitmap;
     }
+
+    public List<Music> getMusic(String singerName){
+        List<Music> music = new ArrayList<>();
+        if (singerName == null)
+            return mMusicList;
+        for (int i = 0 ; i < mMusicList.size() ; i++){
+            if (mMusicList.get(i).getSinger().equals(singerName) || mMusicList.get(i).getAlbum().equals(singerName))
+                music.add(mMusicList.get(i));
+        }
+       return music;
+    }
 }
