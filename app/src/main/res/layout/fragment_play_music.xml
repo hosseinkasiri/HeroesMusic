@@ -1,57 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:fitsSystemWindows = "true"
     android:layout_height="match_parent"
     android:background="@color/primaryColor">
 
     <ImageView
-        android:id="@+id/play_cover"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:id="@+id/background_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.1"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/play_previous"
+        android:layout_width="31dp"
+        android:layout_height="38dp"
+        app:layout_constraintBottom_toBottomOf="@+id/play_play"
+        app:layout_constraintEnd_toStartOf="@+id/play_play"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/play_random"
+        app:layout_constraintTop_toTopOf="@+id/play_play"
+        app:srcCompat="@drawable/ic_previous_icon" />
+
+    <ImageView
+        android:id="@+id/play_cover"
+        android:layout_width="0dp"
+        android:layout_height="400dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="24dp"
+        android:alpha="1"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.153"
         app:srcCompat="@drawable/default_music_cover" />
 
     <TextView
         android:id="@+id/play_music_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/avenir_next_medium"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.158"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/play_cover"
         app:layout_constraintTop_toBottomOf="@+id/play_cover"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.003"
         tools:text="Migzare" />
 
     <TextView
         android:id="@+id/play_artist_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/primaryLightColor"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/avenir_next_medium"
+        android:textColor="@color/design_default_color_surface"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.176"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/play_music_name"
         app:layout_constraintTop_toBottomOf="@+id/play_music_name"
-        app:layout_constraintVertical_bias="0.028"
         tools:text="Sogand_Zakhmi" />
 
     <SeekBar
         android:id="@+id/play_seekBar"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="@color/primaryTextColor"
         android:backgroundTintMode="src_over"
         android:foregroundTint="@color/primaryTextColor"
@@ -60,99 +85,83 @@
         android:progressTint="@color/primaryTextColor"
         android:secondaryProgressTint="@color/primaryTextColor"
         android:thumbTint="@color/primaryTextColor"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.706"
+        app:layout_constraintTop_toBottomOf="@+id/play_artist_name"
         app:tickMarkTint="@color/primaryLightColor" />
 
     <ImageView
         android:id="@+id/play_play"
         android:layout_width="80dp"
-        android:layout_height="74dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/play_next"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.863"
+        app:layout_constraintStart_toEndOf="@+id/play_previous"
+        app:layout_constraintTop_toBottomOf="@+id/play_seekBar"
         app:srcCompat="@drawable/ic_stop_icon" />
-
-    <ImageView
-        android:id="@+id/play_previous"
-        android:layout_width="31dp"
-        android:layout_height="38dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/play_play"
-        app:layout_constraintHorizontal_bias="0.785"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.85"
-        app:srcCompat="@drawable/ic_previous_icon" />
 
     <ImageView
         android:id="@+id/play_next"
         android:layout_width="31dp"
         android:layout_height="38dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.22"
+        app:layout_constraintBottom_toBottomOf="@+id/play_play"
+        app:layout_constraintEnd_toStartOf="@+id/play_repeat"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/play_play"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.85"
+        app:layout_constraintTop_toTopOf="@+id/play_play"
         app:srcCompat="@drawable/ic_next_icon" />
 
     <ImageView
         android:id="@+id/play_random"
         android:layout_width="34dp"
         android:layout_height="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/play_previous"
-        app:layout_constraintHorizontal_bias="0.222"
+        android:layout_marginStart="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/play_previous"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.851"
+        app:layout_constraintTop_toTopOf="@+id/play_previous"
         app:srcCompat="@drawable/ic_random_icon" />
 
     <ImageView
         android:id="@+id/play_repeat"
         android:layout_width="34dp"
         android:layout_height="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/play_next"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.78"
-        app:layout_constraintStart_toEndOf="@+id/play_next"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.851"
+        app:layout_constraintTop_toTopOf="@+id/play_next"
         app:srcCompat="@drawable/ic_repeat_icon" />
 
     <TextView
         android:id="@+id/play_start_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="15dp"
+        android:fontFamily="@font/avenir_next_medium"
         android:text="00:00"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.082"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/play_seekBar"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="@+id/play_seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/play_seekBar" />
 
     <TextView
         android:id="@+id/play_end_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/avenir_next_medium"
         android:text="05:00"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.915"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/play_seekBar"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintEnd_toEndOf="@+id/play_seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/play_seekBar" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="left" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

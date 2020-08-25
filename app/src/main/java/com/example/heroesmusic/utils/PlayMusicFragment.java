@@ -1,6 +1,7 @@
 package com.example.heroesmusic.utils;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -10,6 +11,8 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -29,20 +32,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import jp.wasabeef.blurry.Blurry;
+
 public class PlayMusicFragment extends Fragment {
 
     private static final String ARGS_POSITION = "com.example.heroesMusic.utils_position";
     private static final String ARGS_SINGER = "com.example.heroesMusic.utils_singer";
-    private ImageView mMusicCover , mPlayImage , mPreviousImage;
-    private ImageView mNextImage,mRepeatImage , mRandomImage;
-    private TextView mMusicName , mArtistName, mCurrentTime, mTotalTime;
+    private ImageView mMusicCover, mPlayImage, mPreviousImage, mBackgroundImage;
+    private ImageView mNextImage, mRepeatImage, mRandomImage;
+    private TextView mMusicName, mArtistName, mCurrentTime, mTotalTime;
     private SeekBar mSeekBar;
     private Music mMusic;
     private String mSingerName;
     private int mPosition;
     private List<Music> mMusicList;
     private List<Music> mShuffleList;
-    private boolean mRepeatBool , mRandomBool;
+    private boolean mRepeatBool, mRandomBool;
 
     public static PlayMusicFragment newInstance(int position , String singerName) {
         Bundle args = new Bundle();
@@ -75,9 +80,12 @@ public class PlayMusicFragment extends Fragment {
         mMusicName.setText(mMusic.getMusicName());
         mArtistName.setText(mMusic.getSinger());
         mMusicCover.setImageBitmap(MusicLab.getInstance(getActivity()).getMusicBitmap(mMusic));
+        Blurry.with(getActivity()).from(MusicLab.getInstance(getActivity()).getMusicBitmap(mMusic)).into(mBackgroundImage);
         listenerOfButtons();
         //completionListener();
         handelSeekBar();
+
+
         return view;
     }
 
@@ -256,5 +264,7 @@ public class PlayMusicFragment extends Fragment {
         mSeekBar = view.findViewById(R.id.play_seekBar);
         mCurrentTime = view.findViewById(R.id.play_start_time);
         mTotalTime = view.findViewById(R.id.play_end_time);
+        mBackgroundImage = view.findViewById(R.id.background_image);
+
     }
 }
