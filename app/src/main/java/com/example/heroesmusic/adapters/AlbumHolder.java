@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.model.Album;
 import com.example.heroesmusic.model.MusicLab;
-import com.example.heroesmusic.utils.MusicListActivity;
+import com.example.heroesmusic.controller.MusicListActivity;
 
 public class AlbumHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

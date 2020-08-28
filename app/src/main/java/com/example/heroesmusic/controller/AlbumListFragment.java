@@ -1,4 +1,4 @@
-package com.example.heroesmusic.utils;
+package com.example.heroesmusic.controller;
 
 import android.os.Bundle;
 
@@ -14,7 +14,6 @@ import com.example.heroesmusic.R;
 import com.example.heroesmusic.adapters.AlbumAdapter;
 import com.example.heroesmusic.model.Album;
 import com.example.heroesmusic.model.AlbumLab;
-import com.example.heroesmusic.model.MusicLab;
 
 import java.util.ArrayList;
 import java.util.List;

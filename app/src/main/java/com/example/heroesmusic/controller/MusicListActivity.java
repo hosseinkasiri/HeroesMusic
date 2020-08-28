@@ -1,4 +1,4 @@
-package com.example.heroesmusic.utils;
+package com.example.heroesmusic.controller;
 
 import android.content.Context;
 import android.content.Intent;

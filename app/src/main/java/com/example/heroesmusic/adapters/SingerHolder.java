@@ -2,19 +2,17 @@ package com.example.heroesmusic.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.model.MusicLab;
 import com.example.heroesmusic.model.Singer;
-import com.example.heroesmusic.utils.MusicListActivity;
+import com.example.heroesmusic.controller.MusicListActivity;
 
 public class SingerHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

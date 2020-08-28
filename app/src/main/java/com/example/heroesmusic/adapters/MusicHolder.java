@@ -2,6 +2,7 @@ package com.example.heroesmusic.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.print.PrinterId;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,9 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.model.Music;
 import com.example.heroesmusic.model.MusicLab;
-import com.example.heroesmusic.utils.PlayMusicActivity;
-
-import java.io.IOException;
+import com.example.heroesmusic.controller.PlayMusicActivity;
 
 public class MusicHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

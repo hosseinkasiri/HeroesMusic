@@ -1,4 +1,4 @@
-package com.example.heroesmusic.utils;
+package com.example.heroesmusic.controller;
 
 import android.os.Bundle;
 
@@ -11,16 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.heroesmusic.R;
-import com.example.heroesmusic.adapters.MusicAdapter;
 import com.example.heroesmusic.adapters.SingerAdapter;
-import com.example.heroesmusic.model.Music;
-import com.example.heroesmusic.model.MusicLab;
 import com.example.heroesmusic.model.Singer;
 import com.example.heroesmusic.model.SingerLab;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class SingerListFragment extends Fragment {
 
