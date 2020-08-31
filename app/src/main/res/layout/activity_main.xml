@@ -6,45 +6,18 @@
     android:layout_height="match_parent"
     android:id="@+id/activity_main">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primaryColor">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/tool_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/primaryColor"
-            app:layout_scrollFlags="enterAlways|scroll"
-            app:menu="@menu/toolbar_menu">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="sans-serif"
-                android:text="@string/heroes_music"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="20sp"
-                android:textStyle="italic" />
-        </com.google.android.material.appbar.MaterialToolbar>
-    </com.google.android.material.appbar.AppBarLayout>
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
+    <LinearLayout
+        android:id="@+id/linear_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/linear"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-    </androidx.viewpager.widget.ViewPager>
+        android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/linear"
-        android:layout_gravity="bottom">
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+        </androidx.viewpager.widget.ViewPager>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
@@ -55,6 +28,6 @@
             app:itemIconTint="@drawable/bottom_navigation_color"
             app:itemTextColor="@drawable/bottom_navigation_color">
         </com.google.android.material.bottomnavigation.BottomNavigationView>
-    </LinearLayout>
 
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

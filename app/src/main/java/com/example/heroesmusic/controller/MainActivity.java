@@ -17,8 +17,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AppBarLayout mAppBarLayout;
-    private Toolbar mToolbar;
     private BottomNavigationView mBottomNavigation;
     private ViewPager mViewPager;
 
@@ -31,62 +29,11 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(MusicListFragment.newInstance(null));
         adapter.addFragment(SingerListFragment.newInstance());
         adapter.addFragment(AlbumListFragment.newInstance());
+        adapter.addFragment(SearchFragment.newInstance());
         mViewPager.setAdapter(adapter);
-        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(4);
         handelViewPager();
         handelBottomNavigation();
-        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.search_toolbar:
-                        SearchView searchView = (SearchView) item.getActionView();
-                        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                            @Override
-                            public boolean onQueryTextSubmit(String query) {
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onQueryTextChange(String newText) {
-                                return false;
-                            }
-                        });
-                        break;
-                }
-                return false;
-            }
-        });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu , menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.search_toolbar :
-                SearchView searchView = (SearchView) item.getActionView();
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        return false;
-                    }
-                });
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void handelBottomNavigation() {
@@ -103,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.album:
                         mViewPager.setCurrentItem(2);
                         break;
+                    case R.id.search:
+                        mViewPager.setCurrentItem(3);
                 }
                 return false;
             }
@@ -127,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
                     case 2:
                         mBottomNavigation.getMenu().findItem(R.id.album).setChecked(true);
                         break;
+                    case 3:
+                        mBottomNavigation.getMenu().findItem(R.id.search).setChecked(true);
                 }
             }
             @Override
@@ -136,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void findViews(){
-        mAppBarLayout = findViewById(R.id.app_bar);
-        mToolbar = findViewById(R.id.tool_bar);
         mBottomNavigation = findViewById(R.id.bottom_navigation);
         mViewPager = findViewById(R.id.view_pager);
     }
