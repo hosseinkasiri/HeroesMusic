@@ -1,7 +1,9 @@
 package com.example.heroesmusic.adapters;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ import com.example.heroesmusic.R;
 import com.example.heroesmusic.controller.PlayMusicActivity;
 import com.example.heroesmusic.model.Music;
 import com.example.heroesmusic.model.MusicLab;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -20,7 +23,6 @@ public class SearchHolder extends RecyclerView.ViewHolder implements View.OnClic
 
     private ImageView mMusicImage;
     private TextView mMusicName , mMusicArtist;
-    private Music mMusic;
     private Context mContext;
     private List<Music> mMusicList;
 
@@ -30,12 +32,22 @@ public class SearchHolder extends RecyclerView.ViewHolder implements View.OnClic
     }
 
     public void bind(Music music, Context context, List<Music> musicList){
-        mMusic = music;
         mContext = context;
         mMusicList = musicList;
         mMusicName.setText(music.getMusicName());
         mMusicArtist.setText(music.getSinger());
-        mMusicImage.setImageBitmap(MusicLab.getInstance(mContext).getMusicBitmap(mMusic));
+        setMusicImage(music, context);
+    }
+
+    private void setMusicImage(Music music, Context context) {
+        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+        Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, music.getAlbumId());
+        Picasso.with(context)
+                .load(albumArtUri)
+                .placeholder(R.drawable.default_music_cover)
+                .resize(200, 200)
+                .error(R.drawable.default_music_cover)
+                .into(mMusicImage);
     }
 
     private void findViews(@NonNull View itemView) {

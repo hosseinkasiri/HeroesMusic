@@ -1,7 +1,9 @@
 package com.example.heroesmusic.adapters;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ import com.example.heroesmusic.R;
 import com.example.heroesmusic.model.Album;
 import com.example.heroesmusic.model.MusicLab;
 import com.example.heroesmusic.controller.MusicListActivity;
+import com.squareup.picasso.Picasso;
 
 public class AlbumHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -32,7 +35,18 @@ public class AlbumHolder extends RecyclerView.ViewHolder implements View.OnClick
         mAlbum = album;
         mAlbumName.setText(album.getAlbumName());
         mArtistName.setText(album.getSinger());
-        mAlbumImage.setImageBitmap(MusicLab.getInstance(context).getMusicBitmap(album.getAlbumId()));
+        setAlbumImage(album, context);
+    }
+
+    private void setAlbumImage(Album album, Context context) {
+        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+        Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, album.getAlbumId());
+        Picasso.with(context)
+                .load(albumArtUri)
+                .placeholder(R.drawable.default_music_cover)
+                .resize(200, 200)
+                .error(R.drawable.default_music_cover)
+                .into(mAlbumImage);
     }
 
     @Override
