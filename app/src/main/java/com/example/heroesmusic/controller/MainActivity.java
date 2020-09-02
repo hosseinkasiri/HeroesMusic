@@ -33,8 +33,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getPermission(this);
         findViews();
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,Manifest.permission.READ_EXTERNAL_STORAGE)){
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[] {Manifest.permission.READ_EXTERNAL_STORAGE} , REQ_PERMISSION);
+            } else {
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, REQ_PERMISSION);
+            }
+        }else {
+            doStuff();
+        }
+    }
+
+    private void doStuff() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(MusicListFragment.newInstance(null));
         adapter.addFragment(SingerListFragment.newInstance());
@@ -96,34 +110,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void getPermission(Context context){
-        if (ContextCompat.checkSelfPermission(context,
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity)context,Manifest.permission.READ_EXTERNAL_STORAGE)){
-                ActivityCompat.requestPermissions((Activity) context,
-                        new String[] {Manifest.permission.READ_EXTERNAL_STORAGE} , REQ_PERMISSION);
-            } else {
-                ActivityCompat.requestPermissions((Activity) context,
-                        new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, REQ_PERMISSION);
-            }
-        }else {
-            MusicLab.getInstance(this).doStuff(this);
-        }
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode){
-            case 0:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    MusicLab.getInstance(this).doStuff(this);
-                }else {
-                    Toaster.makeToast(this, "permission denied");
-                    getPermission(this);
+            case REQ_PERMISSION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(MainActivity.this,
+                            Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                        Toaster.makeToast(MainActivity.this, "Permission granted");
+                        doStuff();
+                    }
+                } else {
+                    Toaster.makeToast(MainActivity.this, "No permission granted!");
+                    finish();
                 }
                 break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 

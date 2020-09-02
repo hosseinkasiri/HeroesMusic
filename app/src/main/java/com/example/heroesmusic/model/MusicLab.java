@@ -46,10 +46,6 @@ public class MusicLab {
         return mMusicList;
     }
 
-    public void doStuff(Context context){
-        getMusic(context);
-    }
-
     private List<Music> getMusic(Context context){
         List<Music> musicList = new ArrayList<>();
         final Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -104,24 +100,6 @@ public class MusicLab {
         return bitmap;
     }
 
-    public Bitmap getMusicBitmap(long albumId){
-        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
-        Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
-        Bitmap bitmap = null;
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), albumArtUri);
-
-        } catch (FileNotFoundException exception) {
-            exception.printStackTrace();
-            bitmap = BitmapFactory.decodeResource(mContext.getResources(),
-                    R.drawable.default_music_cover);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bitmap;
-    }
-
     public List<Music> getMusic(String singerName){
         List<Music> music = new ArrayList<>();
         if (singerName == null)
@@ -130,6 +108,6 @@ public class MusicLab {
             if (mMusicList.get(i).getSinger().equals(singerName) || mMusicList.get(i).getAlbum().equals(singerName))
                 music.add(mMusicList.get(i));
         }
-       return music;
+        return music;
     }
 }
