@@ -15,13 +15,15 @@ import com.example.heroesmusic.model.Music;
 import com.example.heroesmusic.model.MusicLab;
 import com.example.heroesmusic.controller.PlayMusicActivity;
 
+import java.util.List;
+
 public class MusicHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private ImageView mMusicImage;
     private TextView mMusicName , mMusicArtist;
     private Music mMusic;
     private Context mContext;
-    private String mSingerName;
+    private List<Music> mMusicList;
 
     public MusicHolder(@NonNull View itemView) {
         super(itemView);
@@ -30,15 +32,15 @@ public class MusicHolder extends RecyclerView.ViewHolder implements View.OnClick
 
     private void findViews(@NonNull View itemView) {
         itemView.setOnClickListener(this);
-        mMusicImage = itemView.findViewById(R.id.music_image);
+        mMusicImage = itemView.findViewById(R.id.music_image_view);
         mMusicName = itemView.findViewById(R.id.music_name);
         mMusicArtist = itemView.findViewById(R.id.music_artist);
     }
 
-    public void bind(Music music , Context context , String singerName) {
+    public void bind(Music music, Context context, List<Music> musicList) {
         mMusic = music;
         mContext = context;
-        mSingerName = singerName;
+        mMusicList = musicList;
         mMusicName.setText(music.getMusicName());
         mMusicArtist.setText(music.getSinger());
         mMusicImage.setImageBitmap(MusicLab.getInstance(mContext).getMusicBitmap(mMusic));
@@ -46,7 +48,7 @@ public class MusicHolder extends RecyclerView.ViewHolder implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        Intent intent = PlayMusicActivity.newIntent(mContext , getAdapterPosition() , mSingerName);
+        Intent intent = PlayMusicActivity.newIntent(mContext, getAdapterPosition(), mMusicList);
         v.getContext().startActivity(intent);
     }
 }

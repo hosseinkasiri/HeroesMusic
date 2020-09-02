@@ -23,9 +23,9 @@ public class AlbumHolder extends RecyclerView.ViewHolder implements View.OnClick
     public AlbumHolder(@NonNull View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
-        mAlbumImage = itemView.findViewById(R.id.album_image);
-        mAlbumName = itemView.findViewById(R.id.album_name);
-        mArtistName = itemView.findViewById(R.id.album_artist);
+        mAlbumImage = itemView.findViewById(R.id.music_image_view);
+        mAlbumName = itemView.findViewById(R.id.music_name);
+        mArtistName = itemView.findViewById(R.id.music_artist);
     }
 
     public void bind(Album album , Context context){

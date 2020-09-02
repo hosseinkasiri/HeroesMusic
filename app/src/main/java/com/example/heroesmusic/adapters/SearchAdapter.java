@@ -38,7 +38,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchHolder> implements
     @Override
     public void onBindViewHolder(@NonNull SearchHolder holder, int position) {
         Music music = mMusicList.get(position);
-        holder.bind(music , mContext);
+        holder.bind(music, mContext, mMusicList);
     }
 
     @Override

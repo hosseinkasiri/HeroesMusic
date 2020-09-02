@@ -65,7 +65,6 @@ public class MusicListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_music_list, container, false);
         findViews(view);
         mMusicRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        MusicLab.getInstance(getActivity()).getPermission(getActivity());
         updateUi();
         return view;
     }
@@ -73,7 +72,7 @@ public class MusicListFragment extends Fragment {
     private void updateUi() {
         mMusic = mMusicLab.getMusic(mSingerName);
         if (mMusicAdapter == null) {
-            mMusicAdapter = new MusicAdapter(getActivity(), mMusic, mSingerName);
+            mMusicAdapter = new MusicAdapter(getActivity(), mMusic);
             mMusicRecyclerView.setAdapter(mMusicAdapter);
         }else {
             mMusicAdapter.setMusic(mMusic);

@@ -4,19 +4,28 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.adapters.ViewPagerAdapter;
+import com.example.heroesmusic.helper.Toaster;
+import com.example.heroesmusic.model.MusicLab;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int REQ_PERMISSION = 0;
     private BottomNavigationView mBottomNavigation;
     private ViewPager mViewPager;
 
@@ -24,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getPermission(this);
         findViews();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(MusicListFragment.newInstance(null));
@@ -84,6 +94,37 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
+    }
+
+    public void getPermission(Context context){
+        if (ContextCompat.checkSelfPermission(context,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity)context,Manifest.permission.READ_EXTERNAL_STORAGE)){
+                ActivityCompat.requestPermissions((Activity) context,
+                        new String[] {Manifest.permission.READ_EXTERNAL_STORAGE} , REQ_PERMISSION);
+            } else {
+                ActivityCompat.requestPermissions((Activity) context,
+                        new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, REQ_PERMISSION);
+            }
+        }else {
+            MusicLab.getInstance(this).doStuff(this);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case 0:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    MusicLab.getInstance(this).doStuff(this);
+                }else {
+                    Toaster.makeToast(this, "permission denied");
+                    getPermission(this);
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     private void findViews(){

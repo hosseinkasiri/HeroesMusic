@@ -23,7 +23,7 @@ public class SingerHolder extends RecyclerView.ViewHolder implements View.OnClic
     public SingerHolder(@NonNull View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
-        mSingerImage = itemView.findViewById(R.id.singer_image);
+        mSingerImage = itemView.findViewById(R.id.singer_image_view);
         mSingerName =itemView.findViewById(R.id.singer_name);
     }
 

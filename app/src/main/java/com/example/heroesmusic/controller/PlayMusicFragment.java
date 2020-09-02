@@ -1,12 +1,12 @@
 package com.example.heroesmusic.controller;
 
-import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,35 +28,33 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import jp.wasabeef.blurry.Blurry;
 
 public class PlayMusicFragment extends Fragment {
 
     private static final String ARGS_POSITION = "com.example.heroesMusic.utils_position";
-    private static final String ARGS_SINGER = "com.example.heroesMusic.utils_singer";
+    private static final String ARGS_LIST = "com.example.heroesMusic.utils_singer";
     private ImageView mMusicCover, mPlayImage, mPreviousImage, mBackgroundImage;
     private ImageView mNextImage, mRepeatImage, mRandomImage;
     private TextView mMusicName, mArtistName, mCurrentTime, mTotalTime;
     private SeekBar mSeekBar;
     private Music mMusic;
     private MediaPlayer mMediaPlayer;
-    private String mSingerName;
     private int mPosition;
     private List<Music> mMusicList;
     private List<Music> mShuffleList;
     private boolean mRepeatBool, mRandomBool;
     private Handler mHandler;
-    private double startTime = 0;
+    private double startTime;
 
     public PlayMusicFragment() {
     }
 
-    public static PlayMusicFragment newInstance(int position , String singerName) {
+    public static PlayMusicFragment newInstance(int position, List<Music> music) {
         Bundle args = new Bundle();
         args.putInt(ARGS_POSITION , position);
-        args.putString(ARGS_SINGER , singerName);
+        args.putParcelableArrayList(ARGS_LIST, (ArrayList<? extends Parcelable>) music);
         PlayMusicFragment fragment = new PlayMusicFragment();
         fragment.setArguments(args);
         return fragment;
@@ -67,13 +65,13 @@ public class PlayMusicFragment extends Fragment {
         super.onCreate(savedInstanceState);
         assert getArguments() != null;
         mPosition = getArguments().getInt(ARGS_POSITION);
-        mSingerName = getArguments().getString(ARGS_SINGER);
-        mMusicList = MusicLab.getInstance(getActivity()).getMusic(mSingerName);
+        mMusicList = getArguments().getParcelableArrayList(ARGS_LIST);
         mMusic = mMusicList.get(mPosition);
         if (mMediaPlayer == null)
             ((MediaPlayerGlobal) getActivity().getApplication()).setMediaPlayer(new MediaPlayer());
         mMediaPlayer = ((MediaPlayerGlobal) getActivity().getApplication()).getMediaPlayer();
         mShuffleList = new ArrayList<>(mMusicList);
+        startTime = 0;
         mHandler = new Handler();
         mRepeatBool = false;
         mRandomBool = false;
@@ -93,7 +91,9 @@ public class PlayMusicFragment extends Fragment {
         startMusic(mMusic);
         mMusicName.setText(mMusic.getMusicName());
         mArtistName.setText(mMusic.getSinger());
-        mMusicCover.setImageBitmap(MusicLab.getInstance(getActivity()).getMusicBitmap(mMusic));
+        mPlayImage.setImageResource(R.drawable.ic_pause_icon);
+        Bitmap bitmap = MusicLab.getInstance(getActivity()).getMusicBitmap(mMusic);
+        mMusicCover.setImageBitmap(bitmap);
         Blurry.with(getActivity()).from(MusicLab.getInstance(getActivity()).getMusicBitmap(mMusic)).into(mBackgroundImage);
         completionListener();
         handelSeekBar();
@@ -257,7 +257,7 @@ public class PlayMusicFragment extends Fragment {
         }
         else {
             mMediaPlayer.start();
-            mPlayImage.setImageResource(R.drawable.ic_stop_icon);
+            mPlayImage.setImageResource(R.drawable.ic_pause_icon);
         }
     }
 

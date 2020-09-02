@@ -26,7 +26,6 @@ import java.util.List;
 
 public class MusicLab {
 
-    private static final int REQ_PERMISSION = 0;
     private static MusicLab mInstance;
     private List<Music> mMusicList;
     private Context mContext;
@@ -45,21 +44,6 @@ public class MusicLab {
 
     public List<Music> getMusicList() {
         return mMusicList;
-    }
-
-    public void getPermission(Context context){
-        if (ContextCompat.checkSelfPermission(context,
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity)context,Manifest.permission.READ_EXTERNAL_STORAGE)){
-                ActivityCompat.requestPermissions((Activity) context,
-                        new String[] {Manifest.permission.READ_EXTERNAL_STORAGE} , REQ_PERMISSION);
-            } else {
-                ActivityCompat.requestPermissions((Activity) context,
-                        new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, REQ_PERMISSION);
-            }
-        }else {
-            doStuff(context);
-        }
     }
 
     public void doStuff(Context context){
