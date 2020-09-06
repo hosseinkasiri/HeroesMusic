@@ -20,7 +20,7 @@ import java.util.List;
 import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 
-public class PlayMusicActivity extends AppCompatActivity {
+public class PlayMusicActivity extends SingleFragmentActivity {
 
     private static final String EXT_POSITION = "com.example.heroesMusic.utils_position";
     private static final String EXT_LIST = "com.example.heroesMusic.utils_singer";
@@ -39,19 +39,6 @@ public class PlayMusicActivity extends AppCompatActivity {
 // Hide the status bar.
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions | SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |  SYSTEM_UI_FLAG_LAYOUT_STABLE);
-    }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_music_list);
-        FragmentManager manager = getSupportFragmentManager();
-        if (manager.findFragmentById(R.id.activity_music_list) == null){
-
-            manager.beginTransaction()
-                    .add(R.id.activity_music_list , mFragment())
-                    .commit();
-        }
     }
 
     public Fragment mFragment() {

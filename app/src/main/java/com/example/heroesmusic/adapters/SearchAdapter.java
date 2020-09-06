@@ -23,7 +23,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchHolder> implements
     private Context mContext;
 
     public SearchAdapter(Context context, List<Music> musicList) {
-        mMusicList = musicList;
+        mMusicList = new ArrayList<>();
         mAllMusic = new ArrayList<>(musicList);
         mContext = context;
     }

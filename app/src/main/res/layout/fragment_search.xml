@@ -25,22 +25,22 @@
                 android:orientation="vertical"
                 android:layout_gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="sans-serif"
-                android:text="Search"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="20sp"
-                android:textStyle="italic" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/avenir_next_medium"
+                    android:text="@string/search"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="20sp"
+                    android:textStyle="italic" />
 
                 <SearchView
                     android:id="@+id/search_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:iconifiedByDefault="false"
-                    android:searchIcon="@drawable/ic_icon_search"/>
+                    android:searchIcon="@drawable/ic_icon_search"
+                    app:iconifiedByDefault="false" />
 
             </LinearLayout>
         </com.google.android.material.appbar.MaterialToolbar>

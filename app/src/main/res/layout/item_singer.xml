@@ -18,7 +18,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:backgroundTint="@color/primaryColor">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/singer_image"
@@ -47,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:textColor="#FFFFFF"
+            android:fontFamily="@font/avenir_next_medium"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/singer_image"

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import java.util.List;
 
 public class AlbumListFragment extends Fragment {
 
+    private static final String ARG_ALBUMS = "com.example.heroes_music.controller_albums";
     private RecyclerView mAlbumRecyclerView;
     private List<Album> mAlbums;
     private AlbumAdapter mAlbumAdapter;
@@ -28,9 +30,10 @@ public class AlbumListFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static AlbumListFragment newInstance() {
+    public static AlbumListFragment newInstance(List<Album> albums) {
         AlbumListFragment fragment = new AlbumListFragment();
         Bundle args = new Bundle();
+        args.putParcelableArrayList(ARG_ALBUMS, (ArrayList<? extends Parcelable>) albums);
         fragment.setArguments(args);
         return fragment;
     }
@@ -39,6 +42,8 @@ public class AlbumListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAlbums = new ArrayList<>();
+        if (getArguments() != null)
+            mAlbums = getArguments().getParcelableArrayList(ARG_ALBUMS);
     }
 
     @Override
@@ -53,7 +58,6 @@ public class AlbumListFragment extends Fragment {
     }
 
     private void updateUi() {
-        mAlbums = AlbumLab.getInstance(getActivity()).getAlbums();
         if (mAlbumAdapter == null) {
             mAlbumAdapter = new AlbumAdapter(getActivity(), mAlbums);
             mAlbumRecyclerView.setAdapter(mAlbumAdapter);

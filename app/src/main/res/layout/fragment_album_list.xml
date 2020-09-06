@@ -22,8 +22,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="sans-serif"
-                android:text="Album"
+                android:text="@string/album"
+                android:fontFamily="@font/avenir_next_medium"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="20sp"
                 android:textStyle="italic" />

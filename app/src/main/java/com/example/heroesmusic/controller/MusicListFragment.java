@@ -1,50 +1,39 @@
 package com.example.heroesmusic.controller;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.adapters.MusicAdapter;
-import com.example.heroesmusic.helper.Toaster;
 import com.example.heroesmusic.model.Music;
 import com.example.heroesmusic.model.MusicLab;
-import com.example.heroesmusic.utils.MediaPlayerGlobal;
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MusicListFragment extends Fragment {
 
-    private static final String ARGS_SINGER = "com.example.heroesMusic.utils_singerName";
+    private static final String ARGS_MUSIC = "com.example.heroesMusic.utils_music";
     private RecyclerView mMusicRecyclerView;
     private List<Music> mMusic;
     private MusicAdapter mMusicAdapter;
-    private MusicLab mMusicLab;
-    private String mSingerName;
+
     public MusicListFragment() {
         // Required empty public constructor
     }
 
-    public static MusicListFragment newInstance(String singerName) {
+    public static MusicListFragment newInstance(List<Music> music) {
         MusicListFragment fragment = new MusicListFragment();
         Bundle args = new Bundle();
-        args.putString(ARGS_SINGER , singerName);
+        args.putParcelableArrayList(ARGS_MUSIC, (ArrayList<? extends Parcelable>) music);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,10 +42,8 @@ public class MusicListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mMusic = new ArrayList<>();
-        mMusicLab = MusicLab.getInstance(getActivity());
         if (getArguments() != null)
-            mSingerName = getArguments().getString(ARGS_SINGER);
-
+            mMusic = getArguments().getParcelableArrayList(ARGS_MUSIC);
     }
 
     @Override
@@ -70,7 +57,6 @@ public class MusicListFragment extends Fragment {
     }
 
     private void updateUi() {
-        mMusic = mMusicLab.getMusic(mSingerName);
         if (mMusicAdapter == null) {
             mMusicAdapter = new MusicAdapter(getActivity(), mMusic);
             mMusicRecyclerView.setAdapter(mMusicAdapter);

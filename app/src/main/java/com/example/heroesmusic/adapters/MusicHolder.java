@@ -22,7 +22,7 @@ public class MusicHolder extends RecyclerView.ViewHolder implements View.OnClick
 
     private ImageView mMusicImage;
     private TextView mMusicName , mMusicArtist;
-    private Context mContext;
+    private int mPosition;
     private List<Music> mMusicList;
 
     public MusicHolder(@NonNull View itemView) {
@@ -37,9 +37,9 @@ public class MusicHolder extends RecyclerView.ViewHolder implements View.OnClick
         mMusicArtist = itemView.findViewById(R.id.music_artist);
     }
 
-    public void bind(Music music, Context context, List<Music> musicList) {
-        mContext = context;
+    public void bind(Music music, Context context, List<Music> musicList, int position) {
         mMusicList = musicList;
+        mPosition = position;
         mMusicName.setText(music.getMusicName());
         mMusicArtist.setText(music.getSinger());
         setMusicImage(music, context);
@@ -58,7 +58,7 @@ public class MusicHolder extends RecyclerView.ViewHolder implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        Intent intent = PlayMusicActivity.newIntent(mContext, getAdapterPosition(), mMusicList);
+        Intent intent = PlayMusicActivity.newIntent(v.getContext(), mPosition, mMusicList);
         v.getContext().startActivity(intent);
     }
 }

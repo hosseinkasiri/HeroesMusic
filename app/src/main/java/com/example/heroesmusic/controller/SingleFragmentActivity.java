@@ -16,12 +16,12 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_music_list);
         FragmentManager manager = getSupportFragmentManager();
-        if (manager.findFragmentById(R.id.activity_main) == null){
+        if (manager.findFragmentById(R.id.activity_music_list) == null){
 
             manager.beginTransaction()
-                    .add(R.id.activity_main , mFragment())
+                    .add(R.id.activity_music_list , mFragment())
                     .commit();
         }
     }

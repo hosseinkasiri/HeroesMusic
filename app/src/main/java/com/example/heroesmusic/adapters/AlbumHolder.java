@@ -13,9 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.model.Album;
+import com.example.heroesmusic.model.Music;
 import com.example.heroesmusic.model.MusicLab;
 import com.example.heroesmusic.controller.MusicListActivity;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class AlbumHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -51,7 +54,8 @@ public class AlbumHolder extends RecyclerView.ViewHolder implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        Intent intent = MusicListActivity.newIntent(v.getContext() , mAlbum.getAlbumName());
+        List<Music> music = MusicLab.getInstance(v.getContext()).getMusic(mAlbum.getAlbumName());
+        Intent intent = MusicListActivity.newIntent(v.getContext(), music);
         v.getContext().startActivity(intent);
     }
 }

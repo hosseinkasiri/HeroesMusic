@@ -4,24 +4,28 @@
     <item
         android:id="@+id/music"
         android:icon="@drawable/ic_icon_music"
-        android:title="Music"
+        android:title="@string/music"
+        android:fontFamily="@font/avenir_next_medium"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/singer"
         android:icon="@drawable/ic_icon_singer"
-        android:title="Artist"
+        android:title="@string/artist"
+        android:fontFamily="@font/avenir_next_medium"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/album"
         android:icon="@drawable/ic_icon_album"
-        android:title="Album"
+        android:title="@string/album"
+        android:fontFamily="@font/avenir_next_medium"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/search"
         android:icon="@drawable/ic_icon_search"
-        android:title="Search"
+        android:title="@string/search"
+        android:fontFamily="@font/avenir_next_medium"
         app:showAsAction="always"/>
 </menu>

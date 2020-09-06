@@ -12,10 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.heroesmusic.R;
+import com.example.heroesmusic.helper.Toaster;
+import com.example.heroesmusic.model.Music;
 import com.example.heroesmusic.model.MusicLab;
 import com.example.heroesmusic.model.Singer;
 import com.example.heroesmusic.controller.MusicListActivity;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class SingerHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -49,7 +53,8 @@ public class SingerHolder extends RecyclerView.ViewHolder implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        Intent intent = MusicListActivity.newIntent(v.getContext() , mSinger.getSingerName());
+        List<Music> music = MusicLab.getInstance(v.getContext()).getMusic(mSinger.getSingerName());
+        Intent intent = MusicListActivity.newIntent(v.getContext(), music);
         v.getContext().startActivity(intent);
     }
 }

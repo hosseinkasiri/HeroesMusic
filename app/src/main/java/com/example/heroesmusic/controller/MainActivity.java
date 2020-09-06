@@ -19,7 +19,9 @@ import android.view.MenuItem;
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.adapters.ViewPagerAdapter;
 import com.example.heroesmusic.helper.Toaster;
+import com.example.heroesmusic.model.AlbumLab;
 import com.example.heroesmusic.model.MusicLab;
+import com.example.heroesmusic.model.SingerLab;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -50,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void doStuff() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(MusicListFragment.newInstance(null));
-        adapter.addFragment(SingerListFragment.newInstance());
-        adapter.addFragment(AlbumListFragment.newInstance());
+        adapter.addFragment(MusicListFragment.newInstance(MusicLab.getInstance(getBaseContext()).getMusicList()));
+        adapter.addFragment(SingerListFragment.newInstance(SingerLab.getInstance(getBaseContext()).getSingers()));
+        adapter.addFragment(AlbumListFragment.newInstance(AlbumLab.getInstance(getBaseContext()).getAlbums()));
         adapter.addFragment(SearchFragment.newInstance());
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(4);

@@ -1,11 +1,34 @@
 package com.example.heroesmusic.model;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Singer {
+public class Singer implements Parcelable {
     private String mSingerName;
     private String mPath;
     private long mAlbumId;
+
+    protected Singer(Parcel in) {
+        mSingerName = in.readString();
+        mPath = in.readString();
+        mAlbumId = in.readLong();
+    }
+
+    public Singer() {
+    }
+
+    public static final Creator<Singer> CREATOR = new Creator<Singer>() {
+        @Override
+        public Singer createFromParcel(Parcel in) {
+            return new Singer(in);
+        }
+
+        @Override
+        public Singer[] newArray(int size) {
+            return new Singer[size];
+        }
+    };
 
     public String getSingerName() {
         return mSingerName;
@@ -29,5 +52,17 @@ public class Singer {
 
     public void setAlbumId(long albumId) {
         mAlbumId = albumId;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mSingerName);
+        dest.writeString(mPath);
+        dest.writeLong(mAlbumId);
     }
 }

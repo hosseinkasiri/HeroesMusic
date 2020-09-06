@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import java.util.List;
 
 public class SingerListFragment extends Fragment {
 
+    private static final String ARGS_SINGER = "com.example.heroes_music.controller_singer";
     private RecyclerView mSingerRecyclerView;
     private List<Singer> mSingers;
     private SingerAdapter mSingerAdapter;
@@ -28,9 +30,10 @@ public class SingerListFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static SingerListFragment newInstance() {
+    public static SingerListFragment newInstance(List<Singer> singers) {
         SingerListFragment fragment = new SingerListFragment();
         Bundle args = new Bundle();
+        args.putParcelableArrayList(ARGS_SINGER, (ArrayList<? extends Parcelable>) singers);
         fragment.setArguments(args);
         return fragment;
     }
@@ -39,6 +42,8 @@ public class SingerListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSingers = new ArrayList<>();
+        if (getArguments() != null)
+            mSingers = getArguments().getParcelableArrayList(ARGS_SINGER);
     }
 
     @Override
@@ -53,7 +58,6 @@ public class SingerListFragment extends Fragment {
     }
 
     private void updateUi() {
-        mSingers = SingerLab.getInstance(getActivity()).getSingers();
         if (mSingerAdapter == null) {
             mSingerAdapter = new SingerAdapter(getActivity(), mSingers);
             mSingerRecyclerView.setAdapter(mSingerAdapter);
