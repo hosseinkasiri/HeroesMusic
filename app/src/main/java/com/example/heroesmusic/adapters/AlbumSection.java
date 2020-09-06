@@ -1,15 +1,19 @@
 package com.example.heroesmusic.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.model.Album;
+import com.example.heroesmusic.model.Music;
 import com.example.heroesmusic.model.Singer;
+import com.example.heroesmusic.utils.FilterableSection;
 import com.example.heroesmusic.utils.ListMode;
 
 import java.util.ArrayList;
@@ -18,7 +22,7 @@ import java.util.List;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 
-public class AlbumSection extends Section implements Filterable {
+public class AlbumSection extends Section implements FilterableSection {
     private List<Album> mAlbumList;
     private List<Album> mAllAlbum;
     private Context mContext;
@@ -60,38 +64,6 @@ public class AlbumSection extends Section implements Filterable {
     }
 
     @Override
-    public Filter getFilter() {
-        return mFilter;
-    }
-
-    private Filter mFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<Album> filterList = new ArrayList<>();
-            if (constraint.toString().isEmpty())
-                filterList.addAll(mAllAlbum);
-            else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-                for (Album album : mAllAlbum){
-                    if (album.getAlbumName().toLowerCase().contains(filterPattern))
-                        filterList.add(album);
-                }
-            }
-            FilterResults filterResults = new FilterResults();
-            filterResults.values = filterList;
-            return filterResults;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            mAlbumList.clear();
-            mAlbumList.addAll((ArrayList) results.values);
-                setHasFooter(mAlbumList.size() > 3);
-                setHasHeader(mAlbumList.size() != 0);
-        }
-    };
-
-    @Override
     public RecyclerView.ViewHolder getHeaderViewHolder(View view) {
         return new HeaderViewHolder(view, ListMode.album);
     }
@@ -99,5 +71,25 @@ public class AlbumSection extends Section implements Filterable {
     @Override
     public RecyclerView.ViewHolder getFooterViewHolder(View view) {
         return new FooterViewHolder(view, ListMode.album);
+    }
+
+    @Override
+    public void filter(@NonNull final String query) {
+        if (TextUtils.isEmpty(query)) {
+            mAlbumList.clear();
+            mAlbumList.addAll(mAllAlbum);
+            this.setVisible(true);
+        } else {
+            mAlbumList.clear();
+            for (final Album album : mAllAlbum) {
+                if (album.getAlbumName().toLowerCase()
+                        .contains(query.toLowerCase())) {
+                    mAlbumList.add(album);
+                }
+            }
+            this.setVisible(!mAlbumList.isEmpty());
+            setHasFooter(mAlbumList.size() > 3);
+        }
+        setHasFooter(mAlbumList.size() > 3);
     }
 }

@@ -1,15 +1,18 @@
 package com.example.heroesmusic.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.model.Music;
 import com.example.heroesmusic.model.Singer;
+import com.example.heroesmusic.utils.FilterableSection;
 import com.example.heroesmusic.utils.ListMode;
 
 import java.util.ArrayList;
@@ -18,7 +21,7 @@ import java.util.List;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 
-public class SingerSection extends Section implements Filterable {
+public class SingerSection extends Section implements FilterableSection {
     private List<Singer> mSingerList;
     private List<Singer> mAllSinger;
     private Context mContext;
@@ -61,38 +64,6 @@ public class SingerSection extends Section implements Filterable {
     }
 
     @Override
-    public Filter getFilter() {
-        return mFilter;
-    }
-
-    private Filter mFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<Singer> filterList = new ArrayList<>();
-            if (constraint.toString().isEmpty())
-                filterList.addAll(mAllSinger);
-            else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-                for (Singer singer : mAllSinger){
-                    if (singer.getSingerName().toLowerCase().contains(filterPattern))
-                        filterList.add(singer);
-                }
-            }
-            FilterResults filterResults = new FilterResults();
-            filterResults.values = filterList;
-            return filterResults;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            mSingerList.clear();
-            mSingerList.addAll((ArrayList) results.values);
-            setHasFooter(mSingerList.size() > 3);
-            setHasHeader(mSingerList.size() != 0);
-        }
-    };
-
-    @Override
     public RecyclerView.ViewHolder getHeaderViewHolder(View view) {
         return new HeaderViewHolder(view, ListMode.singer);
     }
@@ -100,5 +71,25 @@ public class SingerSection extends Section implements Filterable {
     @Override
     public RecyclerView.ViewHolder getFooterViewHolder(View view) {
         return new FooterViewHolder(view, ListMode.singer);
+    }
+
+    @Override
+    public void filter(@NonNull final String query) {
+        if (TextUtils.isEmpty(query)) {
+            mSingerList.clear();
+            mSingerList.addAll(mAllSinger);
+            this.setVisible(true);
+        } else {
+            mSingerList.clear();
+            for (final Singer singer : mAllSinger) {
+                if (singer.getSingerName().toLowerCase()
+                        .contains(query.toLowerCase())) {
+                    mSingerList.add(singer);
+                }
+            }
+            this.setVisible(!mSingerList.isEmpty());
+            setHasFooter(mSingerList.size() > 3);
+        }
+        setHasFooter(mSingerList.size() > 3);
     }
 }

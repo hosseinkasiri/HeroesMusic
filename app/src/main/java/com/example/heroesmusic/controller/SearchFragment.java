@@ -30,6 +30,7 @@ import com.example.heroesmusic.model.MusicLab;
 import com.example.heroesmusic.adapters.MusicSection;
 import com.example.heroesmusic.model.Singer;
 import com.example.heroesmusic.model.SingerLab;
+import com.example.heroesmusic.utils.FilterableSection;
 import com.example.heroesmusic.utils.ListMode;
 import com.example.heroesmusic.utils.ShowMoreEvent;
 
@@ -39,6 +40,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
+import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 public class SearchFragment extends Fragment {
@@ -121,11 +123,13 @@ public class SearchFragment extends Fragment {
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                mMusicAdapter.getFilter().filter(newText);
-                mSingerAdapter.getFilter().filter(newText);
-                mAlbumAdapter.getFilter().filter(newText);
+                for (Section section : sectionAdapter.getCopyOfSectionsMap().values()) {
+                    if (section instanceof FilterableSection) {
+                        ((FilterableSection) section).filter(newText);
+                    }
+                }
                 sectionAdapter.notifyDataSetChanged();
-                return false;
+                return true;
             }
         });
         int id = mSearchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);

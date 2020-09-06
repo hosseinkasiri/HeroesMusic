@@ -1,25 +1,29 @@
 package com.example.heroesmusic.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.adapters.MusicHolder;
 import com.example.heroesmusic.controller.SearchFragment;
 import com.example.heroesmusic.model.Music;
+import com.example.heroesmusic.utils.FilterableSection;
 import com.example.heroesmusic.utils.ListMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 
-public class MusicSection extends Section implements Filterable {
+public class MusicSection extends Section implements FilterableSection {
     private List<Music> mMusicList;
     private List<Music> mAllMusic;
     private Context mContext;
@@ -61,38 +65,6 @@ public class MusicSection extends Section implements Filterable {
     }
 
     @Override
-    public Filter getFilter() {
-        return mFilter;
-    }
-
-    private Filter mFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<Music> filterList = new ArrayList<>();
-            if (constraint.toString().isEmpty())
-                filterList.addAll(mAllMusic);
-            else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-                for (Music music : mAllMusic){
-                    if (music.getMusicName().toLowerCase().contains(filterPattern))
-                        filterList.add(music);
-                }
-            }
-            FilterResults filterResults = new FilterResults();
-            filterResults.values = filterList;
-            return filterResults;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            mMusicList.clear();
-            mMusicList.addAll((ArrayList) results.values);
-            setHasFooter(mMusicList.size() > 3);
-            setHasHeader(mMusicList.size() != 0);
-        }
-    };
-
-    @Override
     public RecyclerView.ViewHolder getHeaderViewHolder(View view) {
         return new HeaderViewHolder(view, ListMode.music);
     }
@@ -100,5 +72,24 @@ public class MusicSection extends Section implements Filterable {
     @Override
     public RecyclerView.ViewHolder getFooterViewHolder(View view) {
             return new FooterViewHolder(view, ListMode.music);
+    }
+    @Override
+    public void filter(@NonNull final String query) {
+        if (TextUtils.isEmpty(query)) {
+            mMusicList.clear();
+            mMusicList.addAll(mAllMusic);
+            this.setVisible(true);
+        } else {
+            mMusicList.clear();
+            for (final Music music : mAllMusic) {
+                if (music.getMusicName().toLowerCase()
+                        .contains(query.toLowerCase())) {
+                    mMusicList.add(music);
+                }
+            }
+            this.setVisible(!mMusicList.isEmpty());
+            setHasFooter(mMusicList.size() > 3);
+        }
+        setHasFooter(mMusicList.size() > 3);
     }
 }
