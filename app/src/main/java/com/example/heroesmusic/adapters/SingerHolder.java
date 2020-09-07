@@ -11,13 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.heroesmusic.R;
-import com.example.heroesmusic.helper.Toaster;
 import com.example.heroesmusic.model.Music;
 import com.example.heroesmusic.model.MusicLab;
 import com.example.heroesmusic.model.Singer;
 import com.example.heroesmusic.controller.MusicListActivity;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -43,11 +42,11 @@ public class SingerHolder extends RecyclerView.ViewHolder implements View.OnClic
     private void setSingerImage(Singer singer, Context context) {
         Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
         Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, singer.getAlbumId());
-        Picasso.with(context)
+        Glide
+                .with(context)
                 .load(albumArtUri)
+                .centerCrop()
                 .placeholder(R.drawable.default_music_cover)
-                .resize(200, 200)
-                .error(R.drawable.default_music_cover)
                 .into(mSingerImage);
     }
 

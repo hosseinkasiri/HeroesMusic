@@ -11,11 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.controller.PlayMusicActivity;
 import com.example.heroesmusic.model.Music;
-import com.example.heroesmusic.model.MusicLab;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -42,11 +41,11 @@ public class SearchHolder extends RecyclerView.ViewHolder implements View.OnClic
     private void setMusicImage(Music music, Context context) {
         Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
         Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, music.getAlbumId());
-        Picasso.with(context)
+        Glide
+                .with(context)
                 .load(albumArtUri)
+                .centerCrop()
                 .placeholder(R.drawable.default_music_cover)
-                .resize(200, 200)
-                .error(R.drawable.default_music_cover)
                 .into(mMusicImage);
     }
 

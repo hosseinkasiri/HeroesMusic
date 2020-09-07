@@ -56,7 +56,7 @@ public class MusicLab {
                 MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DATA,
                 MediaStore.Audio.Media.ALBUM_ID,
                 MediaStore.Audio.Media.DURATION };
-        final String where = MediaStore.Audio.Media.IS_MUSIC + "=1";
+        final String where = MediaStore.Audio.Media.IS_MUSIC + " != 0";
         final Cursor cursor = context.getContentResolver().query(uri,
                 cursor_cols, where, null, null);
         while (cursor.moveToNext()) {
