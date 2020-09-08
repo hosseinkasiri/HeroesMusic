@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
@@ -30,6 +31,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQ_PERMISSION = 0;
     private BottomNavigationView mBottomNavigation;
     private ViewPager mViewPager;
+
+    public static Intent newIntent(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

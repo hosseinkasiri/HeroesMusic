@@ -15,6 +15,7 @@ import com.example.heroesmusic.R;
 import com.example.heroesmusic.model.Music;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
@@ -28,7 +29,7 @@ public class PlayMusicActivity extends SingleFragmentActivity {
     public static Intent newIntent(Context context, int position, List<Music> music){
         Intent intent = new Intent(context , PlayMusicActivity.class);
         intent.putExtra(EXT_POSITION , position);
-        intent.putExtra(EXT_LIST, (ArrayList<? extends Parcelable>) music);
+        intent.putParcelableArrayListExtra(EXT_LIST, (ArrayList<? extends Parcelable>) music);
         return intent;
     }
 
