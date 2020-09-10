@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void doStuff() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(MusicListFragment.newInstance(MusicLab.getInstance(getBaseContext()).getMusicList()));
+        adapter.addFragment(MusicListFragment.newInstance("all music"));
         adapter.addFragment(SingerListFragment.newInstance(SingerLab.getInstance(getBaseContext()).getSingers()));
         adapter.addFragment(AlbumListFragment.newInstance(AlbumLab.getInstance(getBaseContext()).getAlbums()));
         adapter.addFragment(SearchFragment.newInstance());

@@ -1,6 +1,5 @@
 package com.example.heroesmusic.model;
 
-import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -10,14 +9,14 @@ public class Album implements Parcelable {
     private String mSinger;
     private long mAlbumId;
 
+    public Album() {
+    }
+
     protected Album(Parcel in) {
         mAlbumName = in.readString();
         mAlbumPath = in.readString();
         mSinger = in.readString();
         mAlbumId = in.readLong();
-    }
-
-    public Album() {
     }
 
     public static final Creator<Album> CREATOR = new Creator<Album>() {

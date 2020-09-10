@@ -54,6 +54,7 @@ public class SearchFragment extends Fragment {
     private SingerSection mSingerAdapter;
     private AlbumSection mAlbumAdapter;
     private SectionedRecyclerViewAdapter sectionAdapter;
+    private String mNewText;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -123,6 +124,7 @@ public class SearchFragment extends Fragment {
             }
             @Override
             public boolean onQueryTextChange(String newText) {
+                mNewText = newText;
                 for (Section section : sectionAdapter.getCopyOfSectionsMap().values()) {
                     if (section instanceof FilterableSection) {
                         ((FilterableSection) section).filter(newText);
@@ -146,8 +148,10 @@ public class SearchFragment extends Fragment {
     public void onShowMoreEvent(ShowMoreEvent event) {
         switch (event.getListMode()){
             case music:
-                Intent musicIntent = MusicListActivity.newIntent(getContext(), mMusicAdapter.getMusicList());
-                startActivity(musicIntent);
+                if (mNewText == null)
+                    mNewText = "all music";
+                Intent intent = MusicListActivity.newIntent(getContext(), mNewText);
+                startActivity(intent);
                 break;
             case singer:
                 Intent singerIntent = SingerListActivity.newIntent(getContext(), mSingerAdapter.getSingerList());

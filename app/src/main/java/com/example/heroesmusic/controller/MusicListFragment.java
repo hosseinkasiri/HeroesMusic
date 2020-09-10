@@ -21,19 +21,20 @@ import java.util.List;
 
 public class MusicListFragment extends Fragment {
 
-    private static final String ARGS_MUSIC = "com.example.heroesMusic.utils_music";
+    private static final String ARGS_NAME = "com.example.heroesMusic.utils_name";
     private RecyclerView mMusicRecyclerView;
-    private List<Music> mMusic;
+    private List<Music> mMusicList;
     private MusicAdapter mMusicAdapter;
+    private String mName;
 
     public MusicListFragment() {
         // Required empty public constructor
     }
 
-    public static MusicListFragment newInstance(List<Music> music) {
+    public static MusicListFragment newInstance(String name) {
         MusicListFragment fragment = new MusicListFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(ARGS_MUSIC, (ArrayList<? extends Parcelable>) music);
+        args.putString(ARGS_NAME, name);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,9 +42,9 @@ public class MusicListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMusic = new ArrayList<>();
-        if (getArguments() != null)
-            mMusic = getArguments().getParcelableArrayList(ARGS_MUSIC);
+        mMusicList = new ArrayList<>();
+        if (getArguments().getString(ARGS_NAME) != null)
+            mName = getArguments().getString(ARGS_NAME);
     }
 
     @Override
@@ -57,11 +58,12 @@ public class MusicListFragment extends Fragment {
     }
 
     private void updateUi() {
+        mMusicList = MusicLab.getInstance(getContext()).getMusicWithName(mName);
         if (mMusicAdapter == null) {
-            mMusicAdapter = new MusicAdapter(getActivity(), mMusic);
+            mMusicAdapter = new MusicAdapter(getActivity(), mMusicList, mName);
             mMusicRecyclerView.setAdapter(mMusicAdapter);
         }else {
-            mMusicAdapter.setMusic(mMusic);
+            mMusicAdapter.setMusic(mMusicList);
             mMusicAdapter.notifyDataSetChanged();
         }
     }

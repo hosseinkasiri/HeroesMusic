@@ -1,12 +1,8 @@
 package com.example.heroesmusic.model;
 
-import android.graphics.Bitmap;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.Serializable;
 
 public class Music implements Parcelable {
     private String mMusicName;
@@ -16,6 +12,9 @@ public class Music implements Parcelable {
     private Uri mMusicUri;
     private long mAlbumId;
 
+    public Music() {
+    }
+
     protected Music(Parcel in) {
         mMusicName = in.readString();
         mMusicPath = in.readString();
@@ -23,9 +22,6 @@ public class Music implements Parcelable {
         mAlbum = in.readString();
         mMusicUri = in.readParcelable(Uri.class.getClassLoader());
         mAlbumId = in.readLong();
-    }
-
-    public Music() {
     }
 
     public static final Creator<Music> CREATOR = new Creator<Music>() {

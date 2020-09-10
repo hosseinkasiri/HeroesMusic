@@ -34,7 +34,7 @@ import jp.wasabeef.blurry.Blurry;
 public class PlayMusicFragment extends Fragment {
 
     private static final String ARGS_POSITION = "com.example.heroesMusic.utils_position";
-    private static final String ARGS_LIST = "com.example.heroesMusic.utils_singer";
+    private static final String ARGS_NAME = "com.example.heroesMusic.utils_singer";
     private ImageView mMusicCover, mPlayImage, mPreviousImage, mBackgroundImage;
     private ImageView mNextImage, mRepeatImage, mRandomImage;
     private TextView mMusicName, mArtistName, mCurrentTime, mTotalTime;
@@ -47,14 +47,15 @@ public class PlayMusicFragment extends Fragment {
     private boolean mRepeatBool, mRandomBool;
     private Handler mHandler;
     private double startTime;
+    private String mName;
 
     public PlayMusicFragment() {
     }
 
-    public static PlayMusicFragment newInstance(int position, List<Music> music) {
+    public static PlayMusicFragment newInstance(int position, String name) {
         Bundle args = new Bundle();
         args.putInt(ARGS_POSITION , position);
-        args.putParcelableArrayList(ARGS_LIST, (ArrayList<? extends Parcelable>) music);
+        args.putString(ARGS_NAME, name);
         PlayMusicFragment fragment = new PlayMusicFragment();
         fragment.setArguments(args);
         return fragment;
@@ -65,7 +66,8 @@ public class PlayMusicFragment extends Fragment {
         super.onCreate(savedInstanceState);
         assert getArguments() != null;
         mPosition = getArguments().getInt(ARGS_POSITION);
-        mMusicList = getArguments().getParcelableArrayList(ARGS_LIST);
+        mName = getArguments().getString(ARGS_NAME);
+        mMusicList = MusicLab.getInstance(getActivity()).getMusicWithName(mName);
         mMusic = mMusicList.get(mPosition);
         if (mMediaPlayer == null)
             ((MediaPlayerGlobal) getActivity().getApplication()).setMediaPlayer(new MediaPlayer());

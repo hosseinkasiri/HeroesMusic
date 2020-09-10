@@ -54,8 +54,7 @@ public class AlbumHolder extends RecyclerView.ViewHolder implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        List<Music> music = MusicLab.getInstance(v.getContext()).getMusic(mAlbum.getAlbumName());
-        Intent intent = MusicListActivity.newIntent(v.getContext(), music);
+        Intent intent = MusicListActivity.newIntent(v.getContext(), mAlbum.getAlbumName());
         v.getContext().startActivity(intent);
     }
 }

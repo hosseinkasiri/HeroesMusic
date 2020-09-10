@@ -52,8 +52,7 @@ public class SingerHolder extends RecyclerView.ViewHolder implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        List<Music> music = MusicLab.getInstance(v.getContext()).getMusic(mSinger.getSingerName());
-        Intent intent = MusicListActivity.newIntent(v.getContext(), music);
+        Intent intent = MusicListActivity.newIntent(v.getContext(), mSinger.getSingerName());
         v.getContext().startActivity(intent);
     }
 }

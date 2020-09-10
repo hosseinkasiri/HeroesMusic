@@ -7,13 +7,10 @@
 
     <ImageView
         android:id="@+id/splashscreen"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_gravity="center"
-        android:src="@drawable/default_music_cover" />
-
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Hello World, splash"/>
+        android:tint="@color/primaryOrangeColor"
+        android:src="@drawable/ic_icon_heroes" />
 
 </FrameLayout>

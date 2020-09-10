@@ -19,10 +19,12 @@ import java.util.List;
 public class MusicAdapter extends RecyclerView.Adapter <MusicHolder>{
     private Context mContext;
     private List<Music> mMusic;
+    private String mName;
 
-    public MusicAdapter(Context context, List<Music> music) {
+    public MusicAdapter(Context context, List<Music> music, String name) {
         mContext = context;
         mMusic = new ArrayList<>(music);
+        mName = name;
     }
 
     public void setMusic(List<Music> music) {
@@ -40,7 +42,7 @@ public class MusicAdapter extends RecyclerView.Adapter <MusicHolder>{
     @Override
     public void onBindViewHolder(@NonNull MusicHolder holder, int position) {
         Music music = mMusic.get(position);
-        holder.bind(music, mContext, mMusic, position);
+        holder.bind(music, mContext, position, mName);
     }
 
     @Override

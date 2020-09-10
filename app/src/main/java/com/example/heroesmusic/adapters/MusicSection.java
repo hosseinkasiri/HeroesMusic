@@ -44,10 +44,6 @@ public class MusicSection extends Section implements FilterableSection {
         mAllMusic = new ArrayList<>(musicList);
     }
 
-    public List<Music> getMusicList() {
-        return mMusicList;
-    }
-
     @Override
     public int getContentItemsTotal() {
         return Math.min(mMusicList.size(), 3);
@@ -61,7 +57,7 @@ public class MusicSection extends Section implements FilterableSection {
     @Override
     public void onBindItemViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
         MusicHolder musicHolder = (MusicHolder) viewHolder;
-        musicHolder.bind(mMusicList.get(i), mContext, mMusicList, i);
+        musicHolder.bind(mMusicList.get(i), mContext, 0, mMusicList.get(i).getMusicName());
     }
 
     @Override

@@ -58,7 +58,7 @@ public class SearchHolder extends RecyclerView.ViewHolder implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        Intent intent = PlayMusicActivity.newIntent(mContext, getAdapterPosition(), mMusicList);
-        v.getContext().startActivity(intent);
+//        Intent intent = PlayMusicActivity.newIntent(mContext, getAdapterPosition(), mMusicList);
+//        v.getContext().startActivity(intent);
     }
 }

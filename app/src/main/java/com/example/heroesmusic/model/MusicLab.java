@@ -1,25 +1,18 @@
 package com.example.heroesmusic.model;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.AudioAttributes;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.annotation.NonNull;
 
 import com.example.heroesmusic.R;
-import com.example.heroesmusic.helper.PictureUtils;
-import com.example.heroesmusic.utils.ListMode;
+import com.example.heroesmusic.utils.FilterableSection;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,6 +23,7 @@ public class MusicLab {
 
     private static MusicLab mInstance;
     private List<Music> mMusicList;
+    private List<Music> mAllMusic;
     private Context mContext;
 
     private MusicLab(Context context) {
@@ -48,7 +42,7 @@ public class MusicLab {
         return mMusicList;
     }
 
-    private List<Music> getMusic(Context context){
+    public List<Music> getMusic(Context context){
         List<Music> musicList = new ArrayList<>();
         final Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         final String[] cursor_cols = { MediaStore.Audio.Media._ID,
@@ -102,12 +96,35 @@ public class MusicLab {
         return bitmap;
     }
 
-    public List<Music> getMusic(String name){
+    public List<Music> getMusicWithName(String name){
         List<Music> music = new ArrayList<>();
+        if (name.equals("all music"))
+            return mMusicList;
         for (int i = 0 ; i < mMusicList.size() ; i++){
-            if (mMusicList.get(i).getSinger().equals(name) || mMusicList.get(i).getAlbum().equals(name))
+            if (mMusicList.get(i).getSinger().equals(name) || mMusicList.get(i).getAlbum().equals(name) ||
+            mMusicList.get(i).getMusicName().equalsIgnoreCase(name))
                 music.add(mMusicList.get(i));
         }
+        if (music.size() == 0)
+            music = filterMusic(name);
         return music;
+    }
+
+    public List<Music> filterMusic(@NonNull String query) {
+        List<Music> mFilterMusic = new ArrayList<>();
+        mAllMusic = new ArrayList<>(mMusicList);
+        if (TextUtils.isEmpty(query)) {
+            mFilterMusic.clear();
+            mFilterMusic.addAll(mAllMusic);
+        } else {
+            mFilterMusic.clear();
+            for (final Music music : mAllMusic) {
+                if (music.getMusicName().toLowerCase()
+                        .contains(query.toLowerCase())) {
+                    mFilterMusic.add(music);
+                }
+            }
+        }
+        return mFilterMusic;
     }
 }
