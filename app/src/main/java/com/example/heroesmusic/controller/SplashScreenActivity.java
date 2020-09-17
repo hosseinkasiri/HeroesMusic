@@ -2,32 +2,85 @@ package com.example.heroesmusic.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.Transformation;
+import android.widget.ImageView;
 
 import com.example.heroesmusic.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
     /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 1000;
+
+    private ImageView mImageView;
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.splash_screen);
+        mImageView = findViewById(R.id.splashscreen);
+        bitAnimation();
+
+
 
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
-        new Handler().postDelayed(new Runnable(){
+
+    }
+
+    private void bitAnimation() {
+        Animation bitAnimation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.bit_animation);
+        bitAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void run() {
-                /* Create an Intent that will start the Menu-Activity. */
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+              scaleAnimation();
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        mImageView.startAnimation(bitAnimation);
+    }
+
+    private void scaleAnimation() {
+        Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.splash_animation);
+        aniFade.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mImageView.setVisibility(View.GONE);
                 Intent mainIntent = MainActivity.newIntent(getBaseContext());
                 SplashScreenActivity.this.startActivity(mainIntent);
                 SplashScreenActivity.this.finish();
             }
-        }, SPLASH_DISPLAY_LENGTH);
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        mImageView.setAnimation(aniFade);
     }
 }
+
+
