@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:background="#000002"
+    android:layout_height="fill_parent">
+
+    <ImageView
+        android:id="@+id/splashscreen"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:tint="@color/primaryOrangeColor"
+        android:src="@drawable/ic_icon_heroes" />
+
+</FrameLayout>
