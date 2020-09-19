@@ -65,13 +65,12 @@ public class MusicLab {
             Long albumId = cursor.getLong(cursor
                     .getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
             long mySongId = cursor.getLong(cursor.getColumnIndex(android.provider.MediaStore.Audio.Media._ID));
-            Uri mySongUri=ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, mySongId);
             Music music = new Music();
             music.setSinger(artist);
             music.setAlbum(album);
             music.setMusicPath(data);
             music.setMusicName(track);
-            music.setMusicUri(mySongUri);
+            music.setMusicId(mySongId);
             music.setAlbumId(albumId);
             musicList.add(music);
         }

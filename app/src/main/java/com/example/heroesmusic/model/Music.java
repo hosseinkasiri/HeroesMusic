@@ -4,12 +4,23 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Music implements Parcelable {
+    @PrimaryKey
+    private Long mMusicId;
+    @ColumnInfo(name = "music name")
     private String mMusicName;
+    @ColumnInfo(name = "music path")
     private String mMusicPath;
+    @ColumnInfo(name = "singer name")
     private String mSinger;
+    @ColumnInfo(name = "album name")
     private String mAlbum;
-    private Uri mMusicUri;
+    @ColumnInfo(name = "music album id")
     private long mAlbumId;
 
     public Music() {
@@ -20,8 +31,8 @@ public class Music implements Parcelable {
         mMusicPath = in.readString();
         mSinger = in.readString();
         mAlbum = in.readString();
-        mMusicUri = in.readParcelable(Uri.class.getClassLoader());
         mAlbumId = in.readLong();
+        mMusicId = in.readLong();
     }
 
     public static final Creator<Music> CREATOR = new Creator<Music>() {
@@ -68,20 +79,20 @@ public class Music implements Parcelable {
         mMusicPath = musicPath;
     }
 
-    public Uri getMusicUri() {
-        return mMusicUri;
-    }
-
-    public void setMusicUri(Uri musicUri) {
-        mMusicUri = musicUri;
-    }
-
     public long getAlbumId() {
         return mAlbumId;
     }
 
     public void setAlbumId(long albumId) {
         mAlbumId = albumId;
+    }
+
+    public Long getMusicId() {
+        return mMusicId;
+    }
+
+    public void setMusicId(Long musicId) {
+        mMusicId = musicId;
     }
 
     @Override
@@ -95,7 +106,7 @@ public class Music implements Parcelable {
         dest.writeString(mMusicPath);
         dest.writeString(mSinger);
         dest.writeString(mAlbum);
-        dest.writeParcelable(mMusicUri, flags);
         dest.writeLong(mAlbumId);
+        dest.writeLong(mMusicId);
     }
 }

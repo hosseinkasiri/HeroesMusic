@@ -28,12 +28,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.splash_screen);
         mImageView = findViewById(R.id.splashscreen);
         bitAnimation();
-
-
-
-        /* New Handler to start the Menu-Activity
-         * and close this Splash-Screen after some seconds.*/
-
     }
 
     private void bitAnimation() {
@@ -41,29 +35,25 @@ public class SplashScreenActivity extends AppCompatActivity {
         bitAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
               scaleAnimation();
-
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
             }
         });
         mImageView.startAnimation(bitAnimation);
     }
 
     private void scaleAnimation() {
-        Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.splash_animation);
+        Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.splash_animation);
         aniFade.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
             }
 
             @Override
@@ -76,7 +66,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
             }
         });
         mImageView.setAnimation(aniFade);

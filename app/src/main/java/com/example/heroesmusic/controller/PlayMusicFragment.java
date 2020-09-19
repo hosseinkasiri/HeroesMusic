@@ -1,5 +1,6 @@
 package com.example.heroesmusic.controller;
 
+import android.content.ContentUris;
 import android.graphics.Bitmap;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
@@ -242,7 +243,7 @@ public class PlayMusicFragment extends Fragment {
                         .setUsage(AudioAttributes.USAGE_MEDIA)
                         .build()
         );
-        Uri uri = music.getMusicUri();
+        Uri uri = ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, mMusic.getMusicId());
         try {
             mMediaPlayer.setDataSource(getActivity(), uri);
             mMediaPlayer.prepare();
