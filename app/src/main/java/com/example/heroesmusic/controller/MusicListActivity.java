@@ -2,14 +2,8 @@ package com.example.heroesmusic.controller;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 
 import androidx.fragment.app.Fragment;
-
-import com.example.heroesmusic.model.Music;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MusicListActivity extends SingleFragmentActivity {
 

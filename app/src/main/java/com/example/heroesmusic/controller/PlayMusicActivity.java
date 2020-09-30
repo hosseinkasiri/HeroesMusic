@@ -4,13 +4,7 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.view.View;
-
-import com.example.heroesmusic.model.Music;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE;

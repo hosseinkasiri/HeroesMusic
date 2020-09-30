@@ -7,7 +7,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.heroesmusic.R;
+import com.example.heroesmusic.database.AppDatabase;
+import com.example.heroesmusic.database.FavoriteDataSource;
 import com.example.heroesmusic.model.Music;
 import com.example.heroesmusic.model.MusicLab;
 import com.example.heroesmusic.utils.MediaPlayerGlobal;
@@ -36,8 +37,8 @@ public class PlayMusicFragment extends Fragment {
 
     private static final String ARGS_POSITION = "com.example.heroesMusic.utils_position";
     private static final String ARGS_NAME = "com.example.heroesMusic.utils_singer";
-    private ImageView mMusicCover, mPlayImage, mPreviousImage, mBackgroundImage;
-    private ImageView mNextImage, mRepeatImage, mRandomImage;
+    private ImageView mMusicCover, mPlay, mPrevious, mBackground;
+    private ImageView mNext, mRepeat, mRandom, mFavorite;
     private TextView mMusicName, mArtistName, mCurrentTime, mTotalTime;
     private SeekBar mSeekBar;
     private Music mMusic;
@@ -49,6 +50,7 @@ public class PlayMusicFragment extends Fragment {
     private Handler mHandler;
     private double startTime;
     private String mName;
+    private boolean mFavoriteBool;
 
     public PlayMusicFragment() {
     }
@@ -76,8 +78,6 @@ public class PlayMusicFragment extends Fragment {
         mShuffleList = new ArrayList<>(mMusicList);
         startTime = 0;
         mHandler = new Handler();
-        mRepeatBool = false;
-        mRandomBool = false;
     }
 
     @Nullable
@@ -92,57 +92,75 @@ public class PlayMusicFragment extends Fragment {
 
     private void setAttributesOfMusic() {
         startMusic(mMusic);
+        mFavoriteBool = AppDatabase.getInstance(getActivity()).favoriteDao().loadById(mMusic.getMusicId()) != null;
+        if (mFavoriteBool) mFavorite.setColorFilter(getContext().getResources().getColor(R.color.primaryOrangeColor));
+        else mFavorite.setColorFilter(getContext().getResources().getColor(R.color.primaryLightColor));
         mMusicName.setText(mMusic.getMusicName());
         mArtistName.setText(mMusic.getSinger());
-        mPlayImage.setImageResource(R.drawable.ic_pause_icon);
+        mPlay.setImageResource(R.drawable.ic_pause_icon);
         Bitmap bitmap = MusicLab.getInstance(getActivity()).getMusicBitmap(mMusic);
         mMusicCover.setImageBitmap(bitmap);
-        Blurry.with(getActivity()).from(MusicLab.getInstance(getActivity()).getMusicBitmap(mMusic)).into(mBackgroundImage);
+        Blurry.with(getActivity()).from(MusicLab.getInstance(getActivity()).getMusicBitmap(mMusic)).into(mBackground);
         completionListener();
         handelSeekBar();
     }
 
     private void listenerOfButtons() {
-        mPlayImage.setOnClickListener(new View.OnClickListener() {
+        mPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pause();
             }
         });
 
-        mNextImage.setOnClickListener(new View.OnClickListener() {
+        mNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nextMusic();
             }
         });
 
-        mPreviousImage.setOnClickListener(new View.OnClickListener() {
+        mPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 previousMusic();
             }
         });
 
-        mRepeatImage.setOnClickListener(new View.OnClickListener() {
+        mRepeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mRepeatBool = !mRepeatBool;
                 if (mRepeatBool)
-                    mRepeatImage.setColorFilter(getContext().getResources().getColor(R.color.primaryOrangeColor));
+                    mRepeat.setColorFilter(getContext().getResources().getColor(R.color.primaryOrangeColor));
                 else
-                    mRepeatImage.setColorFilter(getContext().getResources().getColor(R.color.primaryTextColor));
+                    mRepeat.setColorFilter(getContext().getResources().getColor(R.color.primaryTextColor));
             }
         });
 
-        mRandomImage.setOnClickListener(new View.OnClickListener() {
+        mRandom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mRandomBool = ! mRandomBool;
                 if (mRandomBool)
-                    mRandomImage.setColorFilter(getContext().getResources().getColor(R.color.primaryOrangeColor));
+                    mRandom.setColorFilter(getContext().getResources().getColor(R.color.primaryOrangeColor));
                 else
-                    mRandomImage.setColorFilter(getContext().getResources().getColor(R.color.primaryTextColor));
+                    mRandom.setColorFilter(getContext().getResources().getColor(R.color.primaryTextColor));
+            }
+        });
+
+        mFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mFavoriteBool) {
+                    AppDatabase.getInstance(getActivity()).favoriteDao().deleteById(mMusic.getMusicId());
+                    mFavorite.setColorFilter(getContext().getResources().getColor(R.color.primaryLightColor));
+                }else {
+                    FavoriteDataSource dataSource = new FavoriteDataSource(mMusic.getMusicId());
+                    AppDatabase.getInstance(getActivity()).favoriteDao().insertAll(dataSource);
+                    mFavorite.setColorFilter(getContext().getResources().getColor(R.color.primaryOrangeColor));
+                }
+                mFavoriteBool = !mFavoriteBool;
             }
         });
     }
@@ -256,26 +274,27 @@ public class PlayMusicFragment extends Fragment {
     public void pause(){
         if(mMediaPlayer.isPlaying()) {
             mMediaPlayer.pause();
-            mPlayImage.setImageResource(R.drawable.ic_play_icon);
+            mPlay.setImageResource(R.drawable.ic_play_icon);
         }
         else {
             mMediaPlayer.start();
-            mPlayImage.setImageResource(R.drawable.ic_pause_icon);
+            mPlay.setImageResource(R.drawable.ic_pause_icon);
         }
     }
 
     private void findViews(View view) {
         mMusicCover = view.findViewById(R.id.play_cover);
-        mPlayImage = view.findViewById(R.id.play_play);
-        mPreviousImage = view.findViewById(R.id.play_previous);
-        mNextImage = view.findViewById(R.id.play_next);
-        mRepeatImage = view.findViewById(R.id.play_repeat);
-        mRandomImage = view.findViewById(R.id.play_random);
+        mPlay = view.findViewById(R.id.play_play);
+        mPrevious = view.findViewById(R.id.play_previous);
+        mNext = view.findViewById(R.id.play_next);
+        mRepeat = view.findViewById(R.id.play_repeat);
+        mRandom = view.findViewById(R.id.play_random);
         mMusicName = view.findViewById(R.id.play_music_name);
         mArtistName = view.findViewById(R.id.play_artist_name);
         mSeekBar = view.findViewById(R.id.play_seekBar);
         mCurrentTime = view.findViewById(R.id.play_start_time);
         mTotalTime = view.findViewById(R.id.play_end_time);
-        mBackgroundImage = view.findViewById(R.id.background_image);
+        mBackground = view.findViewById(R.id.background_image);
+        mFavorite = view.findViewById(R.id.play_favorite);
     }
 }

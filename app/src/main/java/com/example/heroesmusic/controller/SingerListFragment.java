@@ -14,12 +14,11 @@ import android.view.ViewGroup;
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.adapters.SingerAdapter;
 import com.example.heroesmusic.model.Singer;
-import com.example.heroesmusic.model.SingerLab;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SingerListFragment extends Fragment {
+public class SingerListFragment extends Fragment{
 
     private static final String ARGS_SINGER = "com.example.heroes_music.controller_singer";
     private RecyclerView mSingerRecyclerView;

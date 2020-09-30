@@ -21,7 +21,7 @@
         app:layout_constraintEnd_toStartOf="@+id/play_play"
         app:layout_constraintStart_toEndOf="@+id/play_random"
         app:layout_constraintTop_toTopOf="@+id/play_play"
-        app:srcCompat="@drawable/ic_previous_icon" />
+        app:srcCompat="@drawable/ic_previous_icon"/>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/play_card_view"
@@ -48,7 +48,7 @@
 
     <TextView
         android:id="@+id/play_music_name"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:fontFamily="@font/avenir_next_medium"
@@ -60,7 +60,7 @@
 
     <TextView
         android:id="@+id/play_artist_name"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/avenir_next_medium"
@@ -157,5 +157,14 @@
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="@+id/play_seekBar"
         app:layout_constraintTop_toBottomOf="@+id/play_seekBar" />
+
+    <ImageView
+        android:id="@+id/play_favorite"
+        android:layout_width="28dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="@+id/play_card_view"
+        app:layout_constraintTop_toBottomOf="@+id/play_card_view"
+        app:srcCompat="@drawable/ic_action_favorite" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

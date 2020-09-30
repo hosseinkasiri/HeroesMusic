@@ -3,16 +3,12 @@ package com.example.heroesmusic.adapters;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Filter;
-import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.model.Album;
-import com.example.heroesmusic.model.Music;
-import com.example.heroesmusic.model.Singer;
 import com.example.heroesmusic.utils.FilterableSection;
 import com.example.heroesmusic.utils.ListMode;
 
@@ -54,12 +50,12 @@ public class AlbumSection extends Section implements FilterableSection {
 
     @Override
     public RecyclerView.ViewHolder getItemViewHolder(View view) {
-        return new AlbumHolder(view);
+        return new AlbumAdapter.AlbumHolder(view);
     }
 
     @Override
     public void onBindItemViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
-        AlbumHolder albumHolder= (AlbumHolder) viewHolder;
+        AlbumAdapter.AlbumHolder albumHolder= (AlbumAdapter.AlbumHolder) viewHolder;
         albumHolder.bind(mAlbumList.get(i), mContext);
     }
 

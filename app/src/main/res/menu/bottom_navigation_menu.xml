@@ -28,4 +28,12 @@
         android:title="@string/search"
         android:fontFamily="@font/avenir_next_medium"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/favorite"
+        android:icon="@drawable/ic_action_favorite"
+        android:title="@string/favorite"
+        android:fontFamily="@font/avenir_next_medium"
+        app:showAsAction="always"/>
+
 </menu>

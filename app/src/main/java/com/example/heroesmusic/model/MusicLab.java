@@ -12,23 +12,25 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.example.heroesmusic.R;
-import com.example.heroesmusic.utils.FilterableSection;
+import com.example.heroesmusic.database.AppDatabase;
+import com.example.heroesmusic.database.FavoriteDataSource;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class MusicLab {
 
     private static MusicLab mInstance;
-    private List<Music> mMusicList;
+    private LinkedHashMap<Long, Music> mMusicList;
     private List<Music> mAllMusic;
     private Context mContext;
 
     private MusicLab(Context context) {
         mContext = context;
-        mMusicList = new ArrayList<>();
+        mMusicList = new LinkedHashMap<>();
         mMusicList = getMusic(context);
     }
 
@@ -39,11 +41,11 @@ public class MusicLab {
     }
 
     public List<Music> getMusicList() {
-        return mMusicList;
+        return new ArrayList<>(mMusicList.values());
     }
 
-    public List<Music> getMusic(Context context){
-        List<Music> musicList = new ArrayList<>();
+    public LinkedHashMap<Long, Music> getMusic(Context context){
+        LinkedHashMap<Long, Music> musicList = new LinkedHashMap<>();
         final Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         final String[] cursor_cols = { MediaStore.Audio.Media._ID,
                 MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ALBUM,
@@ -72,7 +74,7 @@ public class MusicLab {
             music.setMusicName(track);
             music.setMusicId(mySongId);
             music.setAlbumId(albumId);
-            musicList.add(music);
+            musicList.put(music.getMusicId(), music);
         }
         return musicList;
     }
@@ -96,22 +98,38 @@ public class MusicLab {
     }
 
     public List<Music> getMusicWithName(String name){
+        List<Music> allList = new ArrayList<>(mMusicList.values());
         List<Music> music = new ArrayList<>();
         if (name.equals("all music"))
-            return mMusicList;
-        for (int i = 0 ; i < mMusicList.size() ; i++){
-            if (mMusicList.get(i).getSinger().equals(name) || mMusicList.get(i).getAlbum().equals(name) ||
-            mMusicList.get(i).getMusicName().equalsIgnoreCase(name))
-                music.add(mMusicList.get(i));
+            return allList;
+        if (name.equals("favorite"))
+            return getFavoriteMusic();
+        for (int i = 0 ; i < allList.size() ; i++){
+            if (allList.get(i).getSinger().equals(name) || allList.get(i).getAlbum().equals(name) ||
+            allList.get(i).getMusicName().equalsIgnoreCase(name))
+                music.add(allList.get(i));
         }
         if (music.size() == 0)
             music = filterMusic(name);
         return music;
     }
 
+    public List<Music> getFavoriteMusic(){
+        List<Music> musicList = new ArrayList<>();
+        List<FavoriteDataSource> dataSources = new ArrayList<>(AppDatabase.getInstance(mContext).favoriteDao().getAll());
+        for (int i = 0; i < dataSources.size(); i++){
+            musicList.add(MusicLab.getInstance(mContext).getMusicById(dataSources.get(i).getFavoriteId()));
+        }
+        return musicList;
+    }
+
+    public Music getMusicById(long musicId){
+        return mMusicList.get(musicId);
+    }
+
     public List<Music> filterMusic(@NonNull String query) {
         List<Music> mFilterMusic = new ArrayList<>();
-        mAllMusic = new ArrayList<>(mMusicList);
+        mAllMusic = new ArrayList<>(mMusicList.values());
         if (TextUtils.isEmpty(query)) {
             mFilterMusic.clear();
             mFilterMusic.addAll(mAllMusic);

@@ -2,16 +2,11 @@ package com.example.heroesmusic.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.Transformation;
 import android.widget.ImageView;
 
 import com.example.heroesmusic.R;
@@ -59,7 +54,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 mImageView.setVisibility(View.GONE);
-                Intent mainIntent = MainActivity.newIntent(getBaseContext());
+                Intent mainIntent = HeroesActivity.newIntent(getBaseContext());
                 SplashScreenActivity.this.startActivity(mainIntent);
                 SplashScreenActivity.this.finish();
             }

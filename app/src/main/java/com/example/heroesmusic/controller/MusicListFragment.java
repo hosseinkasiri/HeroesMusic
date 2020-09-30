@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +56,7 @@ public class MusicListFragment extends Fragment {
         return view;
     }
 
-    private void updateUi() {
+    public void updateUi() {
         mMusicList = MusicLab.getInstance(getContext()).getMusicWithName(mName);
         if (mMusicAdapter == null) {
             mMusicAdapter = new MusicAdapter(getActivity(), mMusicList, mName);

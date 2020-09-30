@@ -1,26 +1,14 @@
 package com.example.heroesmusic.model;
 
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-@Entity
 public class Music implements Parcelable {
-    @PrimaryKey
     private Long mMusicId;
-    @ColumnInfo(name = "music name")
     private String mMusicName;
-    @ColumnInfo(name = "music path")
     private String mMusicPath;
-    @ColumnInfo(name = "singer name")
     private String mSinger;
-    @ColumnInfo(name = "album name")
     private String mAlbum;
-    @ColumnInfo(name = "music album id")
     private long mAlbumId;
 
     public Music() {

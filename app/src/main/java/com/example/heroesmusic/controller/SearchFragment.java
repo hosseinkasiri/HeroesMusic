@@ -15,14 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.adapters.AlbumSection;
-import com.example.heroesmusic.adapters.FooterViewHolder;
-import com.example.heroesmusic.adapters.SingerAdapter;
 import com.example.heroesmusic.adapters.SingerSection;
-import com.example.heroesmusic.helper.Toaster;
 import com.example.heroesmusic.model.Album;
 import com.example.heroesmusic.model.AlbumLab;
 import com.example.heroesmusic.model.Music;
@@ -31,7 +27,6 @@ import com.example.heroesmusic.adapters.MusicSection;
 import com.example.heroesmusic.model.Singer;
 import com.example.heroesmusic.model.SingerLab;
 import com.example.heroesmusic.utils.FilterableSection;
-import com.example.heroesmusic.utils.ListMode;
 import com.example.heroesmusic.utils.ShowMoreEvent;
 
 import org.greenrobot.eventbus.EventBus;
