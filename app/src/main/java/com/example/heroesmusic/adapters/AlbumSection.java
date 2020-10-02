@@ -31,6 +31,8 @@ public class AlbumSection extends Section implements FilterableSection {
                 .build());
         mAlbumList = albumList;
         mAllAlbum = new ArrayList<>(albumList);
+        setHasFooter(mAlbumList.size() > 3);
+        setHasHeader(mAlbumList.size() > 0);
         mContext = context;
     }
 

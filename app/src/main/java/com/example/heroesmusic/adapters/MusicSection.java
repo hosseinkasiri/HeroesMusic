@@ -31,6 +31,8 @@ public class MusicSection extends Section implements FilterableSection {
                 .build());
         mMusicList = new ArrayList<>(musicList);
         mAllMusic = new ArrayList<>(musicList);
+        setHasFooter(mMusicList.size() > 3);
+        setHasHeader(mMusicList.size() > 0);
         mContext = context;
     }
 

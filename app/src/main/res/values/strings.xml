@@ -9,4 +9,7 @@
     <string name="search">Search</string>
     <string name="see_more">See more ...</string>
     <string name="favorite">Favorite</string>
+    <string name="finish_and_save">finish and save</string>
+    <string name="enter">Enter</string>
+    <string name="type_lyric">Type lyric</string>
 </resources>

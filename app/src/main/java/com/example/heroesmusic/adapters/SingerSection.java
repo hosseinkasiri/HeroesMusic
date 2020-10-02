@@ -31,6 +31,8 @@ public class SingerSection extends Section implements FilterableSection {
                 .build());
         mSingerList = new ArrayList<>(singerList);
         mAllSinger = new ArrayList<>(singerList);
+        setHasFooter(mSingerList.size() > 3);
+        setHasHeader(mSingerList.size() > 0);
         mContext = context;
     }
 
