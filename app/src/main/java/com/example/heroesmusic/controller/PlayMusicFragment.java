@@ -1,6 +1,7 @@
 package com.example.heroesmusic.controller;
 
 import android.content.ContentUris;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
@@ -37,10 +38,12 @@ public class PlayMusicFragment extends Fragment {
 
     private static final String ARGS_POSITION = "com.example.heroesMusic.utils_position";
     private static final String ARGS_NAME = "com.example.heroesMusic.utils_singer";
+
     private ImageView mMusicCover, mPlay, mPrevious, mBackground;
-    private ImageView mNext, mRepeat, mRandom, mFavorite;
+    private ImageView mNext, mRepeat, mRandom, mFavorite, mLyric;
     private TextView mMusicName, mArtistName, mCurrentTime, mTotalTime;
     private SeekBar mSeekBar;
+
     private Music mMusic;
     private MediaPlayer mMediaPlayer;
     private int mPosition;
@@ -88,6 +91,12 @@ public class PlayMusicFragment extends Fragment {
         setAttributesOfMusic();
         listenerOfButtons();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPlay.setImageResource(mMediaPlayer.isPlaying() ? R.drawable.ic_pause_icon : R.drawable.ic_play_icon);
     }
 
     private void setAttributesOfMusic() {
@@ -163,6 +172,14 @@ public class PlayMusicFragment extends Fragment {
                 mFavoriteBool = !mFavoriteBool;
             }
         });
+
+        mLyric.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = LyricEntryActivity.newIntent(getContext(), mMusic.getMusicId());
+                startActivity(intent);
+            }
+        });
     }
 
     private void completionListener() {
@@ -232,7 +249,7 @@ public class PlayMusicFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-      mHandler.postDelayed(UpdateSongTime , 100);
+      mHandler.postDelayed(UpdateSongTime, 100);
     }
 
     private Runnable UpdateSongTime = new Runnable() {
@@ -296,5 +313,6 @@ public class PlayMusicFragment extends Fragment {
         mTotalTime = view.findViewById(R.id.play_end_time);
         mBackground = view.findViewById(R.id.background_image);
         mFavorite = view.findViewById(R.id.play_favorite);
+        mLyric = view.findViewById(R.id.play_lyric);
     }
 }

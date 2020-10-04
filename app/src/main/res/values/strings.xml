@@ -12,4 +12,5 @@
     <string name="finish_and_save">finish and save</string>
     <string name="enter">Enter</string>
     <string name="type_lyric">Type lyric</string>
+    <string name="start_time">Start time :</string>
 </resources>
