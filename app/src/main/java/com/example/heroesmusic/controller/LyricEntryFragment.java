@@ -37,12 +37,12 @@ public class LyricEntryFragment extends Fragment {
     private Button mEnterButton, mSaveButton, mDeleteButton, mStartRecordButton;
 
     private List<String> mTexts;
-    private List<Integer> mProgress;
+    private List<Double> mProgress;
     private Long mLyricId;
     private MediaPlayer mMediaPlayer;
     private Handler mHandler;
     private double startTime;
-    private int mSaveProgress;
+    private double mSaveProgress;
 
     public LyricEntryFragment() {
         // Required empty public constructor
@@ -89,7 +89,10 @@ public class LyricEntryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mStartTime.setText("Start time : " + mCurrentTime.getText());
-                mSaveProgress = mMediaPlayer.getCurrentPosition() ;
+                double timeDouble =  mMediaPlayer.getCurrentPosition();
+                double seconds = timeDouble / 1000;
+                mSaveProgress = seconds;
+
             }
         });
         mEnterButton.setOnClickListener(new View.OnClickListener() {

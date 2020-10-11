@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.example.heroesmusic.utils.Converters;
-import com.example.heroesmusic.utils.IntegerConverters;
+import com.example.heroesmusic.utils.DoubleConverters;
 
 import java.util.List;
 
@@ -17,14 +17,14 @@ public class Lyric {
     @TypeConverters(Converters.class)
     @ColumnInfo(name = "texts_lyric")
     private List<String> mTexts;
-    @TypeConverters(IntegerConverters.class)
+    @TypeConverters(DoubleConverters.class)
     @ColumnInfo(name = "startTime_lyric")
-    private List<Integer> mStartTime;
+    private List<Double> mStartTime;
 
     public Lyric() {
     }
 
-    public Lyric(Long lyricId, List<String> texts, List<Integer> startTime) {
+    public Lyric(Long lyricId, List<String> texts, List<Double> startTime) {
         mLyricId = lyricId;
         mTexts = texts;
         mStartTime = startTime;
@@ -46,11 +46,11 @@ public class Lyric {
         mTexts = texts;
     }
 
-    public List<Integer> getStartTime() {
+    public List<Double> getStartTime() {
         return mStartTime;
     }
 
-    public void setStartTime(List<Integer> startTime) {
+    public void setStartTime(List<Double> startTime) {
         mStartTime = startTime;
     }
 }

@@ -9,10 +9,10 @@ import androidx.room.TypeConverters;
 
 import com.example.heroesmusic.model.Lyric;
 import com.example.heroesmusic.utils.Converters;
-import com.example.heroesmusic.utils.IntegerConverters;
+import com.example.heroesmusic.utils.DoubleConverters;
 
 @Database(entities = {FavoriteDataSource.class, Lyric.class}, version = 2)
-@TypeConverters({Converters.class, IntegerConverters.class})
+@TypeConverters({Converters.class, DoubleConverters.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase sInstance;
     public abstract FavoriteDao favoriteDao();

@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Range;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +23,17 @@ import androidx.fragment.app.Fragment;
 import com.example.heroesmusic.R;
 import com.example.heroesmusic.database.AppDatabase;
 import com.example.heroesmusic.database.FavoriteDataSource;
+import com.example.heroesmusic.helper.Toaster;
+import com.example.heroesmusic.model.Lyric;
 import com.example.heroesmusic.model.Music;
 import com.example.heroesmusic.model.MusicLab;
 import com.example.heroesmusic.utils.MediaPlayerGlobal;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -39,9 +44,9 @@ public class PlayMusicFragment extends Fragment {
     private static final String ARGS_POSITION = "com.example.heroesMusic.utils_position";
     private static final String ARGS_NAME = "com.example.heroesMusic.utils_singer";
 
-    private ImageView mMusicCover, mPlay, mPrevious, mBackground;
-    private ImageView mNext, mRepeat, mRandom, mFavorite, mLyric;
-    private TextView mMusicName, mArtistName, mCurrentTime, mTotalTime;
+    private ImageView mMusicCover, mPlay, mPrevious, mBackground, mShowLyric;
+    private ImageView mNext, mRepeat, mRandom, mFavorite, mLyricIcon;
+    private TextView mMusicName, mArtistName, mCurrentTime, mTotalTime, mLyricText;
     private SeekBar mSeekBar;
 
     private Music mMusic;
@@ -51,9 +56,11 @@ public class PlayMusicFragment extends Fragment {
     private List<Music> mShuffleList;
     private boolean mRepeatBool, mRandomBool;
     private Handler mHandler;
-    private double startTime;
+    private double mCurrent;
     private String mName;
     private boolean mFavoriteBool;
+    private Lyric mLyric;
+    private List<Range<Double>> mRanges;
 
     public PlayMusicFragment() {
     }
@@ -79,34 +86,62 @@ public class PlayMusicFragment extends Fragment {
             ((MediaPlayerGlobal) getActivity().getApplication()).setMediaPlayer(new MediaPlayer());
         mMediaPlayer = ((MediaPlayerGlobal) getActivity().getApplication()).getMediaPlayer();
         mShuffleList = new ArrayList<>(mMusicList);
-        startTime = 0;
+        mCurrent = 0;
         mHandler = new Handler();
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_play_music , container , false);
         findViews(view);
+        if (AppDatabase.getInstance(getActivity()).favoriteDao().getLyricById(mMusic.getMusicId()) != null){
+            mLyric = AppDatabase.getInstance(getActivity()).favoriteDao().getLyricById(mMusic.getMusicId());
+        }
         setAttributesOfMusic();
         listenerOfButtons();
+        setRanges();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        if (AppDatabase.getInstance(getActivity()).favoriteDao().getLyricById(mMusic.getMusicId()) != null){
+            mLyric = AppDatabase.getInstance(getActivity()).favoriteDao().getLyricById(mMusic.getMusicId());
+            setRanges();
+        }
         mPlay.setImageResource(mMediaPlayer.isPlaying() ? R.drawable.ic_pause_icon : R.drawable.ic_play_icon);
     }
 
+    private void  setRanges() {
+        if (mLyric == null ) {
+            return;
+        }
+        mRanges = new ArrayList<>();
+        for (int i = 0; i<mLyric.getTexts().size(); i++) {
+            if (i != mLyric.getTexts().size() -1) {
+                double endTime =  mLyric.getStartTime().get(i+1);
+                double startTime = mLyric.getStartTime().get(i);
+                Range<Double> range = new Range<>(startTime,endTime);
+                mRanges.add(range);
+            } else {
+                Double startTime = mLyric.getStartTime().get(i);
+                Range<Double> range = new Range<>(startTime,Double.POSITIVE_INFINITY);
+                mRanges.add(range);
+            }
+        }
+    }
+
     private void setAttributesOfMusic() {
-        startMusic(mMusic);
+        startMusic();
         mFavoriteBool = AppDatabase.getInstance(getActivity()).favoriteDao().loadById(mMusic.getMusicId()) != null;
         if (mFavoriteBool) mFavorite.setColorFilter(getContext().getResources().getColor(R.color.primaryOrangeColor));
         else mFavorite.setColorFilter(getContext().getResources().getColor(R.color.primaryLightColor));
         mMusicName.setText(mMusic.getMusicName());
         mArtistName.setText(mMusic.getSinger());
         mPlay.setImageResource(R.drawable.ic_pause_icon);
+        mLyricText.setVisibility(View.GONE);
         Bitmap bitmap = MusicLab.getInstance(getActivity()).getMusicBitmap(mMusic);
         mMusicCover.setImageBitmap(bitmap);
         Blurry.with(getActivity()).from(MusicLab.getInstance(getActivity()).getMusicBitmap(mMusic)).into(mBackground);
@@ -173,11 +208,29 @@ public class PlayMusicFragment extends Fragment {
             }
         });
 
-        mLyric.setOnClickListener(new View.OnClickListener() {
+        mLyricIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = LyricEntryActivity.newIntent(getContext(), mMusic.getMusicId());
                 startActivity(intent);
+            }
+        });
+
+        mShowLyric.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mLyric == null)
+                    Toaster.makeToast(getContext(), "please create lyric for this music");
+                else {
+                    if (mLyricText.getVisibility() == View.VISIBLE) {
+                        mLyricText.setVisibility(View.GONE);
+                        mShowLyric.setColorFilter(getContext().getResources().getColor(R.color.primaryTextColor));
+                    }
+                    else {
+                        mLyricText.setVisibility(View.VISIBLE);
+                        mShowLyric.setColorFilter(getContext().getResources().getColor(R.color.primaryOrangeColor));
+                    }
+                }
             }
         });
     }
@@ -254,10 +307,20 @@ public class PlayMusicFragment extends Fragment {
 
     private Runnable UpdateSongTime = new Runnable() {
         public void run() {
-            startTime = mMediaPlayer.getCurrentPosition();
-            mCurrentTime.setText(createTimerLabel((int) startTime));
-            mSeekBar.setProgress((int) startTime);
-            mHandler.postDelayed(this, 100);
+            if (getView() != null) {
+                mCurrent = mMediaPlayer.getCurrentPosition();
+                mCurrentTime.setText(createTimerLabel((int) mCurrent));
+                mSeekBar.setProgress((int) mCurrent);
+                mHandler.postDelayed(this, 100);
+                if (mLyric == null) {
+                    return;
+                }
+                for (int i = 0; i < mLyric.getTexts().size(); i++) {
+                    if (mRanges.get(i).contains((double) mMediaPlayer.getCurrentPosition() / 1000)) {
+                        mLyricText.setText(mLyric.getTexts().get(i));
+                    }
+                }
+            }
         }
     };
 
@@ -271,7 +334,7 @@ public class PlayMusicFragment extends Fragment {
         return timerLabel;
     }
 
-    public void startMusic(Music music){
+    public void startMusic(){
         mMediaPlayer.setAudioAttributes(
                 new AudioAttributes.Builder()
                         .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
@@ -313,6 +376,8 @@ public class PlayMusicFragment extends Fragment {
         mTotalTime = view.findViewById(R.id.play_end_time);
         mBackground = view.findViewById(R.id.background_image);
         mFavorite = view.findViewById(R.id.play_favorite);
-        mLyric = view.findViewById(R.id.play_lyric);
+        mLyricIcon = view.findViewById(R.id.play_lyric);
+        mShowLyric = view.findViewById(R.id.play_show_lyric);
+        mLyricText = view.findViewById(R.id.play_lyric_text);
     }
 }

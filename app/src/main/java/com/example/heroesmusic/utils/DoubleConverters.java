@@ -8,28 +8,28 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class IntegerConverters {
+public class DoubleConverters {
     @TypeConverter
-    public String fromOptionValuesList(List<Integer> optionValues) {
+    public String fromOptionValuesList(List<Double> optionValues) {
         if (optionValues == null) {
             return (null);
         }
         Gson gson = new Gson();
-        Type type = new TypeToken<List<Integer>>() {
+        Type type = new TypeToken<List<Double>>() {
         }.getType();
         String json = gson.toJson(optionValues, type);
         return json;
     }
 
     @TypeConverter
-    public List<Integer> toOptionValuesList(String optionValuesString) {
+    public List<Double> toOptionValuesList(String optionValuesString) {
         if (optionValuesString == null) {
             return (null);
         }
         Gson gson = new Gson();
-        Type type = new TypeToken<List<Integer>>() {
+        Type type = new TypeToken<List<Double>>() {
         }.getType();
-        List<Integer> productCategoriesList = gson.fromJson(optionValuesString, type);
+        List<Double> productCategoriesList = gson.fromJson(optionValuesString, type);
         return productCategoriesList;
     }
 }
